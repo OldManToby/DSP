@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QComboBox, QPush
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtCore import Qt
 from PIL import Image
+from team_names import team_names
 
 class PredictionApp(QWidget):
     def __init__(self):
@@ -29,10 +30,11 @@ class PredictionApp(QWidget):
         away_label = QLabel('Away Team:')
         home_label = QLabel('Home Team:')
 
-        # Construct team logos dictionary
+        # Construct team logos dictionary using team_names keys
         team_logos_dir = r'C:\Users\Toby\Documents\GitHub\DSP\nfl_teams'
-        team_folders = [folder for folder in os.listdir(team_logos_dir) if os.path.isdir(os.path.join(team_logos_dir, folder))]
-        self.team_logos = {team: os.path.join(team_logos_dir, team, f'{team.lower()}.png') for team in team_folders}
+        for folder_name, team_name in team_names.items():
+            logo_path = os.path.join(team_logos_dir, folder_name, f'{folder_name.lower()}.png')
+            self.team_logos[team_name] = logo_path
 
         # Populate available teams
         self.available_teams = list(self.team_logos.keys())
