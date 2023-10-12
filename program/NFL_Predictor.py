@@ -66,8 +66,7 @@ class PredictionApp(QWidget):
         layout.addWidget(home_label,2,2)
         layout.addWidget(self.home_team_combo,2,3)
         layout.addWidget(predict_button,3,1,1,2)
-        layout.addWidget(self.result_label,4,0,1,1)
-
+        layout.addWidget(self.result_label,4,0,2,2)
 
         self.setLayout(layout)
 
