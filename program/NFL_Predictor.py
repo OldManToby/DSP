@@ -115,7 +115,7 @@ class PredictionApp(QWidget):
     def predictMatch(self):
         away_team = self.away_team_combo.currentText()
         home_team = self.home_team_combo.currentText()
-        prediction = f'Predicting {home_team} vs {away_team}... Prediction result goes here.'
+        prediction = f'Predicting {away_team} vs {home_team}... Prediction result goes here.'
         self.result_label.setText(prediction)
 
 if __name__ == '__main__':
