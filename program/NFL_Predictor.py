@@ -58,8 +58,8 @@ class PredictionApp(QWidget):
         self.result_label = QLabel('Prediction will be shown here.')
 
         # Arrange widgets using grid layout
-        layout.addWidget(self.away_team_logo,0,0,1,2)
-        layout.addWidget(self.home_team_logo,0,2,1,2)
+        layout.addWidget(self.away_team_logo,0,0,2,2)
+        layout.addWidget(self.home_team_logo,0,2,2,2)
 
         layout.addWidget(away_label,2,0)
         layout.addWidget(self.away_team_combo,2,1)
@@ -80,7 +80,7 @@ class PredictionApp(QWidget):
 
         # Set pixmap for home/away team logo
         if away_logo_path:
-            away_pixmap = QPixmap(away_logo_path).scaled(100, 100, aspectRatioMode=Qt.AspectRatioMode.KeepAspectRatio)
+            away_pixmap = QPixmap(away_logo_path).scaled(300, 300, aspectRatioMode=Qt.AspectRatioMode.KeepAspectRatio)
             if not away_pixmap.isNull():
                 self.away_team_logo.setPixmap(away_pixmap)
             else:
@@ -88,7 +88,7 @@ class PredictionApp(QWidget):
         else:
             self.away_team_logo.clear()
         if home_logo_path:
-            home_pixmap = QPixmap(home_logo_path).scaled(100, 100, aspectRatioMode=Qt.AspectRatioMode.KeepAspectRatio)
+            home_pixmap = QPixmap(home_logo_path).scaled(300, 300, aspectRatioMode=Qt.AspectRatioMode.KeepAspectRatio)
             if not home_pixmap.isNull():
                 self.home_team_logo.setPixmap(home_pixmap)
             else:
