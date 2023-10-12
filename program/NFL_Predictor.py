@@ -13,12 +13,11 @@ class PredictionApp(QWidget):
 
     def initUI(self):
         self.setWindowTitle('NFL Match Predictor')
-        self.setGeometry(100, 100, 400, 200)
+        self.setGeometry(100,100,750,750)
 
         # Load and set application icon
         app_icon = QIcon(r'C:\Users\Toby\Documents\GitHub\DSP\program\NFL_Logo.jpg')  # Provide the path to your icon file
         self.setWindowIcon(app_icon)
-
         layout = QGridLayout()
 
         # Team logo display
@@ -60,14 +59,17 @@ class PredictionApp(QWidget):
         self.result_label = QLabel('Prediction will be shown here.')
 
         # Arrange widgets using grid layout
-        layout.addWidget(self.away_team_logo, 0, 0, 1, 2)  # Away team logo above dropdown menu (row 0, column 0, rowspan 1, columnspan 2)
-        layout.addWidget(away_label, 1, 0)  # Away team label (row 1, column 0)
-        layout.addWidget(self.away_team_combo, 1, 1)  # Away team dropdown menu (row 1, column 1)
-        layout.addWidget(self.home_team_logo, 2, 0, 1, 2)  # Home team logo above dropdown menu (row 2, column 0, rowspan 1, columnspan 2)
-        layout.addWidget(home_label, 3, 0)  # Home team label (row 3, column 0)
-        layout.addWidget(self.home_team_combo, 3, 1)  # Home team dropdown menu (row 3, column 1)
-        layout.addWidget(predict_button, 4, 0, 1, 2)  # Predict button (row 4, column 0, rowspan 1, columnspan 2)
-        layout.addWidget(self.result_label, 5, 0, 1, 2)  # Result label (row 5, column 0, rowspan 1, columnspan 2)
+        layout.addWidget(self.away_team_logo,0,0,2,2)  # Away team logo on the left (row 0, column 0, rowspan 2, columnspan 1)
+        layout.addWidget(self.home_team_logo,0,2,2,2)  # Home team logo on the right (row 0, column 1, rowspan 2, columnspan 1)
+
+        layout.addWidget(away_label,2,0)  # Away team label (row 2, column 0)
+        layout.addWidget(self.away_team_combo,2,1)  # Away team dropdown menu (row 2, column 1)
+        layout.addWidget(home_label,2,2)  # Home team label (row 3, column 0)
+        layout.addWidget(self.home_team_combo,2,3)  # Home team dropdown menu (row 3, column 1)
+
+        layout.addWidget(predict_button,3,1,1,2)  # Predict button at the bottom (row 5, column 0, rowspan 1, columnspan 2)
+        layout.addWidget(self.result_label,4,0,1,1)  # Result label at the bottom (row 4, column 0, rowspan 1, columnspan 2)
+
 
         self.setLayout(layout)
 
