@@ -8,8 +8,8 @@ class PredictionApp(QWidget):
     def __init__(self):
         super().__init__()
         self.team_logos = {}  # Define the team_logos dictionary here
+        self.available_teams = list(self.team_logos.keys())  # Define available teams
         self.initUI()
-        print(os.getcwd())
 
     def initUI(self):
         self.setWindowTitle('NFL Match Predictor')
@@ -29,30 +29,28 @@ class PredictionApp(QWidget):
         away_label = QLabel('Away Team:')
         home_label = QLabel('Home Team:')
 
-
-        # Dropdown menu for away team
-        self.away_team_combo = QComboBox()
-        self.away_team_combo.addItems(self.team_logos.keys())
-
-        # Dropdown menu for home team
-        self.home_team_combo = QComboBox()
-        self.home_team_combo.addItems(self.team_logos.keys())
-
         # Construct team logos dictionary
         team_logos_dir = r'C:\Users\Toby\Documents\GitHub\DSP\nfl_teams'
         team_folders = [folder for folder in os.listdir(team_logos_dir) if os.path.isdir(os.path.join(team_logos_dir, folder))]
         self.team_logos = {team: os.path.join(team_logos_dir, team, f'{team.lower()}.png') for team in team_folders}
 
+        # Populate available teams
+        self.available_teams = list(self.team_logos.keys())
+
         # Dropdown menu for home team
         self.home_team_combo = QComboBox()
-        self.home_team_combo.addItems([team for team in self.team_logos.keys()])
+        self.home_team_combo.addItems(self.available_teams)
 
         # Dropdown menu for away team
         self.away_team_combo = QComboBox()
-        self.away_team_combo.addItems([team for team in self.team_logos.keys()])
+        self.away_team_combo.addItems(self.available_teams)
 
+        # Connect the currentIndexChanged signals to updateLogos method
         self.home_team_combo.currentIndexChanged.connect(self.updateLogos)
         self.away_team_combo.currentIndexChanged.connect(self.updateLogos)
+
+        # Call updateLogos to initialize logos and dropdown menus
+        self.updateLogos()
 
         # Predict button
         predict_button = QPushButton('Predict')
@@ -102,6 +100,23 @@ class PredictionApp(QWidget):
         else:
             self.home_team_logo.clear()  # Clear the pixmap if no logo path is found
 
+        # Disable selected teams in the other dropdown menu
+        selected_home_team = self.home_team_combo.currentText()
+        selected_away_team = self.away_team_combo.currentText()
+
+        # Disable selected home team in away_team_combo
+        self.away_team_combo.blockSignals(True)
+        self.away_team_combo.clear()
+        self.away_team_combo.addItems([team for team in self.available_teams if team != selected_home_team])
+        self.away_team_combo.setCurrentText(selected_away_team)
+        self.away_team_combo.blockSignals(False)
+
+        # Disable selected away team in home_team_combo
+        self.home_team_combo.blockSignals(True)
+        self.home_team_combo.clear()
+        self.home_team_combo.addItems([team for team in self.available_teams if team != selected_away_team])
+        self.home_team_combo.setCurrentText(selected_home_team)
+        self.home_team_combo.blockSignals(False)
 
     def predictMatch(self):
         # Get selected teams
@@ -111,7 +126,6 @@ class PredictionApp(QWidget):
         # Here you can add your prediction logic based on the selected teams
         prediction = f'Predicting {home_team} vs {away_team}... Prediction result goes here.'
         self.result_label.setText(prediction)
-
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
