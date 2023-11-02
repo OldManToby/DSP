@@ -53,7 +53,6 @@ class PredictionApp(QWidget):
         self.home_team_combo.setCurrentText(random.choice(self.available_teams))
         self.away_team_combo.setCurrentText(random.choice(self.available_teams))
 
-
         # Call updateLogos to initialize logos and dropdown menus
         self.updateLogos()
 
@@ -107,7 +106,6 @@ class PredictionApp(QWidget):
         # Disable selected teams in the other dropdown menu
         selected_home_team = self.home_team_combo.currentText()
         selected_away_team = self.away_team_combo.currentText()
-
 
         self.away_team_combo.blockSignals(True)
         self.away_team_combo.clear()
