@@ -1,5 +1,6 @@
 import sys
 import os
+import random
 from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QComboBox, QPushButton, QLabel
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtCore import Qt
@@ -49,6 +50,10 @@ class PredictionApp(QWidget):
         self.home_team_combo.currentIndexChanged.connect(self.updateLogos)
         self.away_team_combo.currentIndexChanged.connect(self.updateLogos)
 
+        self.home_team_combo.setCurrentText(random.choice(self.available_teams))
+        self.away_team_combo.setCurrentText(random.choice(self.available_teams))
+
+
         # Call updateLogos to initialize logos and dropdown menus
         self.updateLogos()
 
@@ -56,6 +61,8 @@ class PredictionApp(QWidget):
         predict_button.clicked.connect(self.predictMatch)
 
         self.result_label = QLabel('Prediction will be shown here.')
+        self.result_label.setWordWrap(True)
+        self.result_label.setFixedSize(300, 60)
 
         # Arrange widgets using grid layout
         layout.addWidget(self.away_team_logo,0,0,2,2)
@@ -82,6 +89,7 @@ class PredictionApp(QWidget):
             away_pixmap = QPixmap(away_logo_path).scaled(300, 300, aspectRatioMode=Qt.AspectRatioMode.KeepAspectRatio)
             if not away_pixmap.isNull():
                 self.away_team_logo.setPixmap(away_pixmap)
+                self.away_team_logo.setStyleSheet("border: 2px solid black;")  # Set border style
             else:
                 print("Error loading away team logo image")
         else:
@@ -90,6 +98,7 @@ class PredictionApp(QWidget):
             home_pixmap = QPixmap(home_logo_path).scaled(300, 300, aspectRatioMode=Qt.AspectRatioMode.KeepAspectRatio)
             if not home_pixmap.isNull():
                 self.home_team_logo.setPixmap(home_pixmap)
+                self.home_team_logo.setStyleSheet("border: 2px solid black;")  # Set border style
             else:
                 print("Error loading home team logo image")
         else:
