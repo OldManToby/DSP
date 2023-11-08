@@ -1,0 +1,65 @@
+{
+    "link1": {
+        "Team": "Team",
+        "Att": "Attempts",
+        "Cmp": "Completions",
+        "Cmp %": "Completion Percentage",
+        "Yds/Att": "Yards per Attempt",
+        "Pass Yds": "Passing Yards",
+        "TD": "Touchdowns",
+        "INT": "Interceptions",
+        "Rate": "Passer Rating",
+        "1st": "First Downs",
+        "1st%": "First Down Percentage",
+        "20+": "20+ Yards Passes",
+        "40+": "40+ Yards Passes",
+        "Lng": "Longest Pass",
+        "Sck": "Sacks",
+        "SckY": "Sack Yards"
+    },
+    "link2": {
+        "Team": "Team",
+        "Att": "Attempts",
+        "Rush Yds": "Rushing Yards",
+        "YPC": "Yards per Carry",
+        "TD": "Touchdowns",
+        "20+": "20+ Yard Runs",
+        "40+": "40+ Yard Runs",
+        "Lng": "Longest Run",
+        "Rush 1st": "Rushing First Downs",
+        "Rush 1st%": "Rushing First Down Percentage",
+        "Rush FUM": "Rushing Fumbles"
+    },
+    "link3": {
+        "Team": "Team",
+        "Rec": "Receptions",
+        "Yds": "Receiving Yards",
+        "Yds/Rec": "Yards per Reception",
+        "TD": "Touchdowns",
+        "20+": "20+ Yard Receptions",
+        "40+": "40+ Yard Receptions",
+        "Lng": "Longest Reception",
+        "Rec 1st": "Receiving First Downs",
+        "Rec 1st%": "Receiving First Down Percentage",
+        "Rec FUM": "Receiving Fumbles"
+    },
+    "link4": {
+        "Team": "Team",
+        "Rsh TD": "Rushing Touchdowns",
+        "Rec TD": "Receiving Touchdowns",
+        "Tot TD": "Total Touchdowns",
+        "2-PT": "Two-Point Conversions"
+    },
+    "link5": {
+        "Team": "Team",
+        "3rd Att": "Third Down Attempts",
+        "3rd Md": "Third Down Conversions",
+        "4th Att": "Fourth Down Attempts",
+        "4th Md": "Fourth Down Conversions",
+        "Rec 1st": "Receiving First Downs",
+        "Rec 1st%": "Receiving First Down Percentage",
+        "Rush 1st": "Rushing First Downs",
+        "Rush 1st%": "Rushing First Down Percentage",
+        "Scrm Plys": "Scrimmage Plays"
+    }
+}

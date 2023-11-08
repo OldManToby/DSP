@@ -12,16 +12,8 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import RobustScaler
 
-#load in the data
-data = pd.read_csv('dataset / API here')
+def load_csv():
+    data = pd.read_csv(r'C:\Users\Toby\Documents\GitHub\DSP\team_stats\2022\Offensive\stats_1.csv')
+    return data
 
-#Preprocess the data
-
-X = data.drop('target', axis=1)
-Y = data['target']
-
-X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_state=42)
-
-scaler = StandardScaler()
-X_train = scaler.fit_transform(X_train)
-X_test = scaler.transform(X_test)
+data = load_csv()
