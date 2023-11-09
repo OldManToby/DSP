@@ -13,6 +13,7 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import RobustScaler
 
+#load in the data through subfolders within 'team_stats'
 def load_csv(folder_path):
     all_data = []
     for subdir, _, files in os.walk(folder_path):
@@ -23,9 +24,7 @@ def load_csv(folder_path):
                 all_data.append(data)
     combined_data = pd.concat(all_data, ignore_index=True)
     return combined_data
-
 folder_path = r'C:\Users\Toby\Documents\GitHub\DSP\team_stats'
-
 data = load_csv(folder_path)
 print(data)
 
