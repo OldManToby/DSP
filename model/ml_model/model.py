@@ -17,3 +17,5 @@ def load_csv():
     return data
 
 data = load_csv()
+
+print (data)

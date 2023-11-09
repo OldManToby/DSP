@@ -3,6 +3,7 @@ import csv
 import subprocess
 import os
 from bs4 import BeautifulSoup
+import re
 
 web_scraper_path = "C:\\Users\\Toby\\Documents\\GitHub\\DSP\\scrape_bot\\web_scraper.py"
 
@@ -38,20 +39,20 @@ def convert_html_to_csv(index):
 
     with open(html_input_filepath, "r") as file:
         content = file.read()
+    cleaned_content = re.sub(r'\s+', ' ', content)
+    cleaned_content = re.sub(r'<td>([^<]+)\s+([^<]+)<', r'<td>\1<', cleaned_content)
 
-    soup = BeautifulSoup(content, 'html.parser')
+    soup = BeautifulSoup(cleaned_content, 'html.parser')
     rows = soup.find_all("tr")
 
-    headers = [col.text.strip() for col in rows[0].find_all(["th", "td"])]
+    headers = [col.text.strip() for col in rows[0].find_all("td")]
     mapped_headers = [header_mapping.get(header, header) for header in headers]
 
-    data = []     
-    for row in rows[1:]:         
-        columns = row.find_all("td")         
-        row_data = [col.text.strip() for col in columns]         
+    data = []
+    for row in rows[1:]:
+        columns = row.find_all("td")
+        row_data = [col.text.strip() for col in columns]
         cleaned_row_data = [item for item in row_data if item]
-        cleaned_row_data = [i.replace(" ", "") for i in cleaned_row_data]
-        cleaned_row_data = [i.replace("\n", "") for i in cleaned_row_data]         
         data.append(cleaned_row_data)
 
     csv_output_filename = f"stats_{index}.csv"
@@ -61,6 +62,7 @@ def convert_html_to_csv(index):
         csvwriter = csv.writer(csvfile)
         csvwriter.writerow(mapped_headers)
         csvwriter.writerows(data)
+
     print(f"CSV file {csv_output_filename} has been created successfully.")
 
 for index, url_to_scrape in enumerate(urls_to_scrape, start=1):
