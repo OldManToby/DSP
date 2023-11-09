@@ -17,15 +17,15 @@ with open(config_file_path, "r") as config_file:
 
 for year in range(2000, current_year + 1):
     urls_to_scrape = [
-        f"https://www.nfl.com/stats/team-stats/offense/passing/{year}/reg/all",
-        f"https://www.nfl.com/stats/team-stats/offense/rushing/{year}/reg/all",
-        f"https://www.nfl.com/stats/team-stats/offense/receiving/{year}/reg/all",
-        f"https://www.nfl.com/stats/team-stats/offense/scoring/{year}/reg/all",
-        f"https://www.nfl.com/stats/team-stats/offense/downs/{year}/reg/all"
+        f"https://www.nfl.com/stats/team-stats/special-teams/field-goals/{year}/reg/all",
+        f"https://www.nfl.com/stats/team-stats/special-teams/scoring/{year}/reg/all",
+        f"https://www.nfl.com/stats/team-stats/special-teams/kickoffs/{year}/reg/all",
+        f"https://www.nfl.com/stats/team-stats/special-teams/punting/{year}/reg/all",
+        f"https://www.nfl.com/stats/team-stats/special-teams/punt-returns/{year}/reg/all"
     ]
 
     # Output directories for HTML and CSV files
-    base_output_directory = os.path.join("C:\\Users\\Toby\\Documents\\GitHub\\DSP\\team_stats", str(year), "Offensive")
+    base_output_directory = os.path.join("C:\\Users\\Toby\\Documents\\GitHub\\DSP\\team_stats", str(year), "Special_Team")
     os.makedirs(base_output_directory, exist_ok=True)
 
     def scrape_and_save_html(url, index):
