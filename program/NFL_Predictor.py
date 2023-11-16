@@ -6,6 +6,8 @@ from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtCore import Qt
 from PIL import Image
 from team_names import team_names
+#Importing ML models
+from model.ml_model import *
 
 class DisclaimerDialog(QMessageBox):
     def __init__(self):
