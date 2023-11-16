@@ -7,7 +7,10 @@ from PyQt5.QtCore import Qt
 from PIL import Image
 from team_names import team_names
 #Importing ML models
-from model.ml_model import *
+from ml_model.model_offensive import OffensiveModel
+from ml_model.model_defensive import DefensiveModel
+from ml_model.model_st import STModel
+from ml_model.model import ModelResults
 
 class DisclaimerDialog(QMessageBox):
     def __init__(self):
@@ -137,7 +140,22 @@ class PredictionApp(QWidget):
     def predictMatch(self):
         away_team = self.away_team_combo.currentText()
         home_team = self.home_team_combo.currentText()
-        prediction = f'Predicting {away_team} vs {home_team}... Prediction result goes here.'
+
+        # Create an instance of OffensiveModel
+        offensive_model = OffensiveModel(r'C:\Users\Toby\Documents\GitHub\DSP\team_stats', away_team, home_team)
+        defensive_model = DefensiveModel(r'C:\Users\Toby\Documents\GitHub\DSP\team_stats', away_team, home_team)
+        special_teams_model = STModel(r'C:\Users\Toby\Documents\GitHub\DSP\team_stats', away_team, home_team)
+        
+        # Get the preprocessed data
+        offensive_preprocessed_data = offensive_model.load_and_preprocess_data()
+        defensive_preprocessed_data = defensive_model.load_and_preprocess_data()
+        special_teams_preprocessed_data = special_teams_model.load_and_preprocess_data()
+        # Display the summary
+        offensive_model.display_summary()
+        prediction_result = "Connecting and running up to the point of the model"
+
+        # Update the result_label with the prediction
+        prediction = f'Predicting {away_team} vs {home_team}... Prediction: {prediction_result}.'
         self.result_label.setText(prediction)
 
 if __name__ == '__main__':
