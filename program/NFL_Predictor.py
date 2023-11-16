@@ -1,11 +1,22 @@
 import sys
 import os
 import random
-from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QComboBox, QPushButton, QLabel, QStyleFactory
+from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QComboBox, QPushButton, QLabel, QStyleFactory, QMessageBox
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtCore import Qt
 from PIL import Image
 from team_names import team_names
+
+class DisclaimerDialog(QMessageBox):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle('Disclaimer')
+        self.setText("This tool is for research purposes only and should not be used for any form of gambling. "
+                      "The accuracy of this model is not guaranteed.\n\n"
+                      "By clicking 'Acknowledge,' you agree to use this tool responsibly.")
+        self.setIcon(QMessageBox.Information)
+        self.addButton(QPushButton('Acknowledge'), QMessageBox.AcceptRole)
+
 
 class PredictionApp(QWidget):
     def __init__(self):
@@ -15,6 +26,8 @@ class PredictionApp(QWidget):
         self.initUI()
 
     def initUI(self):
+        disclaimer_dialog = DisclaimerDialog()
+        disclaimer_dialog.exec_()
         self.setWindowTitle('NFL Match Predictor')
         self.setGeometry(100,100,600,450)
 
