@@ -140,23 +140,31 @@ class PredictionApp(QWidget):
     def predictMatch(self):
         away_team = self.away_team_combo.currentText()
         home_team = self.home_team_combo.currentText()
+        years_to_process = list(range(2000, 2024))
 
-        # Create an instance of OffensiveModel
-        offensive_model = OffensiveModel(r'C:\Users\Toby\Documents\GitHub\DSP\team_stats', away_team, home_team)
-        defensive_model = DefensiveModel(r'C:\Users\Toby\Documents\GitHub\DSP\team_stats', away_team, home_team)
-        special_teams_model = STModel(r'C:\Users\Toby\Documents\GitHub\DSP\team_stats', away_team, home_team)
-        
-        # Get the preprocessed data
-        offensive_preprocessed_data = offensive_model.load_and_preprocess_data()
-        defensive_preprocessed_data = defensive_model.load_and_preprocess_data()
-        special_teams_preprocessed_data = special_teams_model.load_and_preprocess_data()
-        # Display the summary
-        offensive_model.display_summary()
-        prediction_result = "Connecting and running up to the point of the model"
+        all_predictions = []
 
-        # Update the result_label with the prediction
-        prediction = f'Predicting {away_team} vs {home_team}... Prediction: {prediction_result}.'
-        self.result_label.setText(prediction)
+        for model_year in years_to_process:
+            # Create an instance of OffensiveModel
+            offensive_model = OffensiveModel(r'C:\Users\Toby\Documents\GitHub\DSP\team_stats', model_year, away_team, home_team)
+
+            # Get the preprocessed data
+            offensive_preprocessed_data = offensive_model.load_and_preprocess_data()
+
+            # Make predictions for each model if needed
+            offensive_prediction = offensive_model.make_prediction(offensive_preprocessed_data)
+
+            # Aggregate predictions or results for each year
+            year_prediction = f'Year {model_year} - Offensive: {offensive_prediction}'
+            all_predictions.append(year_prediction)
+
+
+        # After processing all years, update the result_label with a final prediction or summary
+        final_summary = "Connecting and running up to the point of the model for all years"
+        all_predictions.append(final_summary)
+        final_result = '\n'.join(all_predictions)
+        self.result_label.setText(final_result)
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
