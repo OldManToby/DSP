@@ -1,16 +1,13 @@
 import sys
 import os
 import random
+import numpy as np
 from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QComboBox, QPushButton, QLabel, QStyleFactory, QMessageBox
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtCore import Qt
 from PIL import Image
+from go_model import preprocess_data
 from team_names import team_names
-#Importing ML models
-from ml_model.model_offensive import OffensiveModel
-from ml_model.model_defensive import DefensiveModel
-from ml_model.model_st import STModel
-from ml_model.model import ModelResults
 
 class DisclaimerDialog(QMessageBox):
     def __init__(self):
@@ -21,7 +18,6 @@ class DisclaimerDialog(QMessageBox):
                       "By clicking 'Acknowledge,' you agree to use this tool responsibly.")
         self.setIcon(QMessageBox.Information)
         self.addButton(QPushButton('Acknowledge'), QMessageBox.AcceptRole)
-
 
 class PredictionApp(QWidget):
     def __init__(self):
@@ -37,7 +33,7 @@ class PredictionApp(QWidget):
         self.setGeometry(100,100,600,450)
 
         # Load and set application icon
-        app_icon = QIcon(r'C:\Users\Toby\Documents\GitHub\DSP\program\NFL_Logo.jpg')
+        app_icon = QIcon('NFL_Logo.jpg')
         self.setWindowIcon(app_icon)
         layout = QGridLayout()
 
@@ -50,7 +46,7 @@ class PredictionApp(QWidget):
         home_label = QLabel('Home Team:')
 
         # Construct team logos dictionary using team_names keys
-        team_logos_dir = r'C:\Users\Toby\Documents\GitHub\DSP\nfl_teams'
+        team_logos_dir = 'nfl_teams'
         for folder_name, team_name in team_names.items():
             logo_path = os.path.join(team_logos_dir, folder_name, f'{folder_name.lower()}.png')
             self.team_logos[team_name] = logo_path
@@ -75,7 +71,7 @@ class PredictionApp(QWidget):
         self.updateLogos()
 
         predict_button = QPushButton('Predict')
-        predict_button.clicked.connect(self.predictMatch)
+        predict_button.clicked.connect(self.on_predict_button_clicked)
 
         self.result_label = QLabel('Prediction will be shown here.')
         self.result_label.setWordWrap(True)
@@ -137,33 +133,21 @@ class PredictionApp(QWidget):
         self.home_team_combo.setCurrentText(selected_home_team)
         self.home_team_combo.blockSignals(False)
 
-    def predictMatch(self):
+    def make_prediction(self, away_team, home_team):
+        data = 'team_stats/Game_Outcome'
+
+        processed_data = preprocess_data(data, away_team, home_team)
+
+        prediction = self.model.predict(processed_data)
+
+        return prediction
+    def on_predict_button_clicked(self):
+
         away_team = self.away_team_combo.currentText()
         home_team = self.home_team_combo.currentText()
-        years_to_process = list(range(2000, 2024))
 
-        all_predictions = []
-
-        for model_year in years_to_process:
-            # Create an instance of OffensiveModel
-            offensive_model = OffensiveModel(r'C:\Users\Toby\Documents\GitHub\DSP\team_stats', model_year, away_team, home_team)
-
-            # Get the preprocessed data
-            offensive_preprocessed_data = offensive_model.load_and_preprocess_data()
-
-            # Make predictions for each model if needed
-            offensive_prediction = offensive_model.make_prediction(offensive_preprocessed_data)
-
-            # Aggregate predictions or results for each year
-            year_prediction = f'Year {model_year} - Offensive: {offensive_prediction}'
-            all_predictions.append(year_prediction)
-
-
-        # After processing all years, update the result_label with a final prediction or summary
-        final_summary = "Connecting and running up to the point of the model for all years"
-        all_predictions.append(final_summary)
-        final_result = '\n'.join(all_predictions)
-        self.result_label.setText(final_result)
+        prediction = self.make_prediction(away_team, home_team)
+        self.result_label.setText(f"Prediction: {prediction}")
 
 
 if __name__ == '__main__':
