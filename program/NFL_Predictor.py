@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QComboBox, QPush
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtCore import Qt
 from PIL import Image
-from go_model import preprocess_data
+from model import train_and_predict
 from team_names import team_names
 
 class DisclaimerDialog(QMessageBox):
@@ -133,21 +133,20 @@ class PredictionApp(QWidget):
         self.home_team_combo.setCurrentText(selected_home_team)
         self.home_team_combo.blockSignals(False)
 
-    def make_prediction(self, away_team, home_team):
-        data = 'team_stats/Game_Outcome'
-
-        processed_data = preprocess_data(data, away_team, home_team)
-
-        prediction = self.model.predict(processed_data)
-
-        return prediction
     def on_predict_button_clicked(self):
+        team1_selection = self.home_team_combo.currentText()
+        team2_selection = self.away_team_combo.currentText()
 
-        away_team = self.away_team_combo.currentText()
-        home_team = self.home_team_combo.currentText()
+        # Call the function from model.py and pass the selected teams
+        prediction = train_and_predict(team1_selection, team2_selection)
 
-        prediction = self.make_prediction(away_team, home_team)
-        self.result_label.setText(f"Prediction: {prediction}")
+        summary = train_and_predict(team1_selection, team2_selection)
+
+        # Update the GUI with the result
+        self.result_label.setText(summary)
+
+        # Update the GUI with the prediction or any relevant result
+        # self.result_label.setText(f"Prediction: {prediction}")
 
 
 if __name__ == '__main__':
