@@ -13,8 +13,8 @@ class DisclaimerDialog(QMessageBox):
     def __init__(self):
         super().__init__()
         self.setWindowTitle('Disclaimer')
-        self.setText("This tool is for research purposes only and should not be used for any form of gambling. "
-                      "The accuracy of this model is not guaranteed.\n\n"
+        self.setText("This tool is for research purposes only and should not be used for any form of gambling.\n\nThe data used a presented is provided by The Football Database(www.footballdb.com) & contains statistics from 2000 onwards.\n"
+                      "\nThe accuracy of this model is not guaranteed.\n\n"
                       "By clicking 'Acknowledge,' you agree to use this tool responsibly.")
         self.setIcon(QMessageBox.Information)
         self.addButton(QPushButton('Acknowledge'), QMessageBox.AcceptRole)
