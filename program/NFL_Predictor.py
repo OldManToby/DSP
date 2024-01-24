@@ -129,13 +129,10 @@ class PredictionApp(QWidget):
     def on_predict_button_clicked(self):
         team1_selection = self.home_team_combo.currentText()
         team2_selection = self.away_team_combo.currentText()
-        prediction = train_and_predict(team1_selection, team2_selection)
-
+        # Call the function once and store the result
         summary = train_and_predict(team1_selection, team2_selection)
+        # Update the GUI with the result
         self.result_label.setText(summary)
-
-        # Update with the prediction
-        # self.result_label.setText(f"Prediction: {prediction}")
 
 
 if __name__ == '__main__':
