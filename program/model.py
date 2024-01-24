@@ -48,11 +48,11 @@ def train_and_predict(team1, team2):
     # Create a heatmap for all numeric features correlation matrix
     corr_matrix = numeric_filtered_data.corr()
     plt.figure(figsize=(12, 10))
-    sns.heatmap(corr_matrix, annot=True, fmt=".2f", cmap='coolwarm', square=True)
+    sns.heatmap(corr_matrix, annot=True, fmt=".2f", cmap='magma', square=True)
     plt.title('Feature Correlation Heatmap for All Numeric Features')
     plt.show(block=False)
 
-    
+
 
     print(f"{team1}: {team1_wins} Wins, {team1_losses} Losses")
     print(f"{team2}: {team2_wins} Wins, {team2_losses} Losses")
