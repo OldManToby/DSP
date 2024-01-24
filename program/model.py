@@ -8,9 +8,13 @@ def train_and_predict(team1, team2):
     dfile_path = 'merged_data.csv'
     data = pd.read_csv(file_path)
     data = data.rename(columns={'Unnamed: 5': 'Home/Away'})
+    data['Home/Away'].fillna('Home', inplace=True)
 
     filtered_data = data[(data['Winner/tie'] == team1) | (data['Loser/tie'] == team1) |
                          (data['Winner/tie'] == team2) | (data['Loser/tie'] == team2)]
+    
+    filtered_data.drop(columns=['Day', 'Date', 'Time', 'Unnamed: 7'], inplace=True)
+
     print(filtered_data)
     # Tally wins and losses for each team
     team1_wins = len(filtered_data[filtered_data['Winner/tie'] == team1])

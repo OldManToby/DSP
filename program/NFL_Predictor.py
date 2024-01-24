@@ -31,17 +31,13 @@ class PredictionApp(QWidget):
         disclaimer_dialog.exec_()
         self.setWindowTitle('NFL Match Predictor')
         self.setGeometry(100,100,600,450)
-
-        # Load and set application icon
         app_icon = QIcon('NFL_Logo.jpg')
         self.setWindowIcon(app_icon)
         layout = QGridLayout()
 
-        # Team logo display
         self.away_team_logo = QLabel(self)
         self.home_team_logo = QLabel(self)
 
-        # Labels for dropdown menus
         away_label = QLabel('Away Team:')
         home_label = QLabel('Home Team:')
 
@@ -67,7 +63,6 @@ class PredictionApp(QWidget):
         self.home_team_combo.setCurrentText(random.choice(self.available_teams))
         self.away_team_combo.setCurrentText(random.choice(self.available_teams))
 
-        # Call updateLogos to initialize logos and dropdown menus
         self.updateLogos()
 
         predict_button = QPushButton('Predict')
@@ -77,7 +72,6 @@ class PredictionApp(QWidget):
         self.result_label.setWordWrap(True)
         self.result_label.setFixedSize(300, 60)
 
-        # Arrange widgets using grid layout
         layout.addWidget(self.away_team_logo,0,0,2,2)
         layout.addWidget(self.home_team_logo,0,2,2,2)
 
@@ -97,7 +91,6 @@ class PredictionApp(QWidget):
         away_logo_path = self.team_logos.get(away_team, '')
         home_logo_path = self.team_logos.get(home_team, '')
 
-        # Set pixmap for home/away team logo
         if away_logo_path:
             away_pixmap = QPixmap(away_logo_path).scaled(300, 300, aspectRatioMode=Qt.AspectRatioMode.KeepAspectRatio)
             if not away_pixmap.isNull():
@@ -111,7 +104,7 @@ class PredictionApp(QWidget):
             home_pixmap = QPixmap(home_logo_path).scaled(300, 300, aspectRatioMode=Qt.AspectRatioMode.KeepAspectRatio)
             if not home_pixmap.isNull():
                 self.home_team_logo.setPixmap(home_pixmap)
-                self.home_team_logo.setStyleSheet("border: 2px solid black;")  # Set border style
+                self.home_team_logo.setStyleSheet("border: 2px solid black;")
             else:
                 print("Error loading home team logo image")
         else:
@@ -136,16 +129,12 @@ class PredictionApp(QWidget):
     def on_predict_button_clicked(self):
         team1_selection = self.home_team_combo.currentText()
         team2_selection = self.away_team_combo.currentText()
-
-        # Call the function from model.py and pass the selected teams
         prediction = train_and_predict(team1_selection, team2_selection)
 
         summary = train_and_predict(team1_selection, team2_selection)
-
-        # Update the GUI with the result
         self.result_label.setText(summary)
 
-        # Update the GUI with the prediction or any relevant result
+        # Update with the prediction
         # self.result_label.setText(f"Prediction: {prediction}")
 
 
