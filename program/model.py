@@ -28,3 +28,17 @@ def train_and_predict(team1, team2):
     summary = f"{team1}: {team1_wins} Wins, {team1_losses} Losses\n"
     summary += f"{team2}: {team2_wins} Wins, {team2_losses} Losses"
     return summary
+
+# PROJECT IN PROGRESS FEEDBACK NOTES
+
+"""
+CORRELATION
+
+FEATURE ENGINEERING
+
+DIMENSIONALITY REDUCTION
+
+
+
+
+"""
