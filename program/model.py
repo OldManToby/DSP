@@ -53,12 +53,12 @@ def train_and_predict(team1, team2):
     plt.show(block=False)
     ## Create a boxplot for all numeric features
     plt.figure(figsize=(8, 6))
-    sns.boxplot(data=numeric_filtered_data)
+    sns.boxplot(data=numeric_filtered_data[['WinRate']].dropna())
     plt.title('Win Rate Boxplot')
     plt.ylabel('Win Rate')
-    plt.show()
+    plt.show(block=False)
 
-
+    
 
     print(f"{team1}: {team1_wins} Wins, {team1_losses} Losses")
     print(f"{team2}: {team2_wins} Wins, {team2_losses} Losses")
