@@ -51,6 +51,12 @@ def train_and_predict(team1, team2):
     sns.heatmap(corr_matrix, annot=True, fmt=".2f", cmap='magma', square=True)
     plt.title('Feature Correlation Heatmap for All Numeric Features')
     plt.show(block=False)
+    ## Create a boxplot for all numeric features
+    plt.figure(figsize=(8, 6))
+    sns.boxplot(data=numeric_filtered_data)
+    plt.title('Win Rate Boxplot')
+    plt.ylabel('Win Rate')
+    plt.show()
 
 
 
