@@ -28,6 +28,7 @@ def train_and_predict(team1, team2):
     filtered_data = data[(data['Winner/tie'] == team1) | (data['Loser/tie'] == team1) |
                          (data['Winner/tie'] == team2) | (data['Loser/tie'] == team2)].copy()
     
+    #Calculate wins and losses
     team1_wins = len(filtered_data[filtered_data['Winner/tie'] == team1])
     team1_losses = len(filtered_data[filtered_data['Loser/tie'] == team1])
     team2_wins = len(filtered_data[filtered_data['Winner/tie'] == team2])
@@ -37,7 +38,7 @@ def train_and_predict(team1, team2):
 
     numeric_filtered_data = filtered_data.select_dtypes(include=[np.number])
     
-    # Create a bar plot for individual feature correlation with WinRate
+    #Bar plot for individual feature correlation with WinRate
     winrate_correlation = numeric_filtered_data.corrwith(numeric_filtered_data['WinRate']).drop('WinRate')
     plt.figure(figsize=(10, 6))
     winrate_correlation.plot(kind='bar', color='skyblue')
@@ -45,20 +46,20 @@ def train_and_predict(team1, team2):
     plt.ylabel('Correlation Coefficient')
     plt.show(block=False)
 
-    # Create a heatmap for all numeric features correlation matrix
+    #Heatmap for all numeric features correlation matrix
     corr_matrix = numeric_filtered_data.corr()
     plt.figure(figsize=(12, 10))
     sns.heatmap(corr_matrix, annot=True, fmt=".2f", cmap='magma', square=True)
     plt.title('Feature Correlation Heatmap for All Numeric Features')
     plt.show(block=False)
-    ## Create a boxplot for all numeric features
+
+    #Boxplot for all numeric features
     plt.figure(figsize=(8, 6))
     sns.boxplot(data=numeric_filtered_data[['WinRate']].dropna())
     plt.title('Win Rate Boxplot')
     plt.ylabel('Win Rate')
     plt.show(block=False)
 
-    
 
     print(f"{team1}: {team1_wins} Wins, {team1_losses} Losses")
     print(f"{team2}: {team2_wins} Wins, {team2_losses} Losses")
