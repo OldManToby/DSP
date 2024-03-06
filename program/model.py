@@ -7,7 +7,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report
 
 def train_and_predict(team1, team2):
-    file_path = 'merged_data.csv'
+    file_path = 'GOmerged_data.csv'
     data = pd.read_csv(file_path)
     data = data.rename(columns={'Unnamed: 5': 'Home/Away'})
     data['Home/Away'].fillna('Home', inplace=True)

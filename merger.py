@@ -19,6 +19,6 @@ def merge_csv_in_folder(folder_path, output_file):
     merged_data.to_csv(output_file, index=False)
 
 # Usage
-folder_path = 'team_stats\Game_Outcome_C'
-output_file = 'merged_data.csv'
+folder_path = 'team_stats\Special_team'
+output_file = 'STmerged_data.csv'
 merge_csv_in_folder(folder_path, output_file)
