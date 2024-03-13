@@ -1,13 +1,15 @@
 import sys
 import os
 import random
+import joblib
 import numpy as np
 from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QComboBox, QPushButton, QLabel, QStyleFactory, QMessageBox
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtCore import Qt
 from PIL import Image
-from model import train_and_predict
+from model_2 import train_and_predict
 from team_names import team_names
+
 
 class DisclaimerDialog(QMessageBox):
     def __init__(self):
@@ -25,6 +27,9 @@ class PredictionApp(QWidget):
         self.team_logos = {}
         self.available_teams = list(self.team_logos.keys())
         self.initUI()
+        self.rf_model = joblib.load('actual_path_to_rf_model.joblib')
+        self.combined_stats = self.load_combined_stats()  # Implement this method to load your combined stats
+
 
     def initUI(self):
         disclaimer_dialog = DisclaimerDialog()
@@ -126,14 +131,24 @@ class PredictionApp(QWidget):
         self.home_team_combo.setCurrentText(selected_home_team)
         self.home_team_combo.blockSignals(False)
 
+    def load_combined_stats(self):
+        # Implement loading of combined stats here
+        # For example, this could involve calling train_and_predict to prepare the data
+        combined_stats = train_and_predict.prepare_combined_stats()  # This is a placeholder, adapt according to your actual function
+        return combined_stats
+        
     def on_predict_button_clicked(self):
-        team1_selection = self.home_team_combo.currentText()
-        team2_selection = self.away_team_combo.currentText()
-        # Call the function once and store the result
-        summary = train_and_predict(team1_selection, team2_selection)
-        # Update the GUI with the result
-        self.result_label.setText(summary)
-
+        team1 = self.home_team_combo.currentText()
+        team2 = self.away_team_combo.currentText()
+        # Load preprocessed combined stats and the trained model
+        self.rf_model, self.combined_stats = train_and_predict(team1, team2)
+        
+        # Now use the model and stats for prediction
+        prediction = self.predict_winner(team1, team2)
+        
+        # Display the prediction result
+        result_text = f"{team1} is predicted to win!" if prediction == 1 else f"{team2} is predicted to win!"
+        self.result_label.setText(result_text)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
