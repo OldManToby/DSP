@@ -9,6 +9,8 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report , accuracy_score
 
 def train_and_predict(team1, team2):
+    model = None
+    combined_stats = pd.DataFrame()
     def load_defensive(file_path, na_values=None):
         return pd.read_csv(file_path, na_values=na_values)
     def clean_defensive(df, drop_columns=None):
@@ -48,7 +50,10 @@ def train_and_predict(team1, team2):
     def load_game_outcome(file_path, na_values=None):
         return pd.read_csv(file_path, na_values=na_values)
     def clean_game_outcome(df, drop_columns=None):
-        drop_columns = ['Unnamed: 5', 'Unnamed: 7', 'Day', 'Time']
+        drop_columns = ['Unnamed: 7', 'Day', 'Time']
+        df = df.rename(columns={'Unnamed: 5': 'Home/Away'})
+        df['Home/Away'] = df['Home/Away'].fillna('Home')
+        df['Home/Away'] = df['Home/Away'].apply(lambda x: 1 if x != '@' else 0)
         df.drop(columns=drop_columns, inplace=True, errors='ignore')
         df['Date'] = pd.to_datetime(df['Date'])
         df.rename(columns={
@@ -88,6 +93,28 @@ def train_and_predict(team1, team2):
     offensive_data = preprocess_offensive(offensive_data)
     st_data = preprocess_st(st_data)
 
+    defensive_stats_team1_team2 = defensive_data[defensive_data['Team'].isin([team1, team2])]
+    print("Defensive Stats for Team1 and Team2:")
+    print(defensive_stats_team1_team2)
+    offensive_stats_team1_team2 = offensive_data[offensive_data['Team'].isin([team1, team2])]
+    print("Offensive Stats for Team1 and Team2:")
+    print(offensive_stats_team1_team2)
+    st_stats_team1_team2 = st_data[st_data['Team'].isin([team1, team2])]
+    print("ST Stats for Team1 and Team2:")
+    print(st_stats_team1_team2)
+
+    go_data = load_game_outcome(go_merged_data_path)
+    go_data = clean_game_outcome(go_data)
+    go_data = preprocess_game_outcome(go_data)
+
+    go_stats_team1_team2 = go_stats_team1_team2 = go_data[(go_data['WinningTeam'] == team1) | 
+                               (go_data['WinningTeam'] == team2) | 
+                               (go_data['LosingTeam'] == team1) | 
+                               (go_data['LosingTeam'] == team2)]
+    print("go Stats for Team1 and Team2:")
+    print(go_stats_team1_team2)
+
+
     # Assuming 'offensive_data' is your DataFrame for the offensive stats
     offensive_numeric_data = offensive_data.select_dtypes(include=[np.number])
     offensive_correlation_matrix = offensive_numeric_data.corr()
@@ -112,78 +139,10 @@ def train_and_predict(team1, team2):
     plt.title("ST Data Correlation Matrix")
     plt.show()
 
-    offensive_avg_stats = offensive_data.groupby('Team', observed=True).mean().reset_index()
-    defensive_avg_stats = defensive_data.groupby('Team', observed=True).mean().reset_index()
-    st_avg_stats = st_data.groupby('Team', observed=True).mean().reset_index()
-
-    combined_stats = offensive_avg_stats.merge(defensive_avg_stats, on='Team', suffixes=('_off', '_def'))
-    combined_stats = combined_stats.merge(st_avg_stats, on='Team')
-
-    go_data = load_game_outcome(go_merged_data_path)
-    go_data = clean_game_outcome(go_data)
-    go_data = preprocess_game_outcome(go_data)
-
-    def analyze_selected_teams(go_data, combined_stats, team1, team2):
-        # Filter games involving either of the selected teams
-        relevant_games = go_data[(go_data['WinningTeam'] == team1) | (go_data['WinningTeam'] == team2) | 
-                                (go_data['LosingTeam'] == team1) | (go_data['LosingTeam'] == team2)]
-        
-        differential_features = []
-        win_labels = []
-
-        for _, game in relevant_games.iterrows():
-            # Determine if team1 is the home team in this game
-            is_team1_home = (game['WinningTeam'] == team1 and game['PointsWon'] > game['PointsLost']) or \
-                            (game['LosingTeam'] == team1 and game['PointsLost'] > game['PointsWon'])
-            
-            # Get team stats
-            team1_stats = get_team_stats(team1, combined_stats)
-            team2_stats = get_team_stats(team2, combined_stats)
-            
-            if is_team1_home:
-                differential = calculate_differentials(team1, team2, combined_stats)
-                win_label = game['WinningTeam'] == team1
-            else:
-                differential = calculate_differentials(team2, team1, combined_stats)
-                win_label = game['WinningTeam'] == team2
-            
-            differential_features.append(differential.flatten())
-            win_labels.append(win_label)
-        
-        # Convert lists to NumPy arrays for model training
-        X = np.array(differential_features)
-        y = np.array(win_labels).astype(int)  # Convert boolean wins to int for model compatibility
-        
-        return X, y
-
-
-    def get_team_stats(team_name, combined_stats):
-        return combined_stats[combined_stats['Team'] == team_name]
-
-    def calculate_differentials(home_team, away_team, combined_stats):
-        home_stats = combined_stats[combined_stats['Team'] == home_team]
-        away_stats = combined_stats[combined_stats['Team'] == away_team]
-        differential = home_stats.values - away_stats.values
-        return differential
-
-    differential_features = []
-    for index, game in go_data.iterrows():
-        diff_stats = calculate_differentials(game['Home'], game['Away'], combined_stats)
-        differential_features.append(diff_stats)
-        
-    # Call the function to analyze the selected teams and prepare your feature set (X) and target variable (y) for model training
-    X, y = analyze_selected_teams(go_data, combined_stats, team1, team2)
-
-    # With X and y prepared, you can now proceed with model training, validation, and testing as usual:
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-    rf_model = RandomForestClassifier(n_estimators=100, random_state=42)
-    rf_model.fit(X_train, y_train)
-
-    # Prediction and evaluation
-    y_pred = rf_model.predict(X_test)
-    print("Classification Report:\n", classification_report(y_test, y_pred))
-    print("Accuracy:", accuracy_score(y_test, y_pred))
-
-    joblib.dump(rf_model, 'rf_model.joblib')
-
-    return rf_model, combined_stats
+    go_numeric_data = go_data.select_dtypes(include=[np.number])
+    go_correlation_matrix = go_numeric_data.corr()
+    plt.figure(figsize=(12, 10))
+    sns.heatmap(go_correlation_matrix, annot=True, cmap='coolwarm')
+    plt.title("GO Data Correlation Matrix")
+    plt.show()
+    return model, combined_stats

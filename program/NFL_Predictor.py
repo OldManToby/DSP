@@ -27,8 +27,8 @@ class PredictionApp(QWidget):
         self.team_logos = {}
         self.available_teams = list(self.team_logos.keys())
         self.initUI()
-        self.rf_model = joblib.load('actual_path_to_rf_model.joblib')
-        self.combined_stats = self.load_combined_stats()  # Implement this method to load your combined stats
+        self.rf_model = None
+        self.combined_stats = None
 
 
     def initUI(self):
@@ -48,9 +48,16 @@ class PredictionApp(QWidget):
 
         # Construct team logos dictionary using team_names keys
         team_logos_dir = 'nfl_teams'
-        for folder_name, team_name in team_names.items():
+        for folder_name, team_list in team_names.items():
+        # Use only the single-word team name for logo mapping
+            single_word_team_name = team_list[-1]  # Gets the last name, which is used in your datasets
             logo_path = os.path.join(team_logos_dir, folder_name, f'{folder_name.lower()}.png')
-            self.team_logos[team_name] = logo_path
+            self.team_logos[single_word_team_name] = logo_path
+
+        # Add an additional entry for the historical name 'Redskins'
+        # assuming 'washington' is the folder for Washington Commanders
+        self.team_logos['Redskins'] = os.path.join(team_logos_dir, 'washington', 'washington.png')
+
 
         # Populate available teams
         self.available_teams = list(self.team_logos.keys())
@@ -136,19 +143,26 @@ class PredictionApp(QWidget):
         # For example, this could involve calling train_and_predict to prepare the data
         combined_stats = train_and_predict.prepare_combined_stats()  # This is a placeholder, adapt according to your actual function
         return combined_stats
+    
+    def predict_winner(self, team1, team2):
+        team1_features = self.combined_stats.loc[self.combined_stats['Team'] == team1].drop('Team', axis=1).values
+        team2_features = self.combined_stats.loc[self.combined_stats['Team'] == team2].drop('Team', axis=1).values
+        
+        differential_features = team1_features - team2_features
+
+        prediction = self.rf_model.predict(differential_features.reshape(1, -1))
+
+        return prediction
         
     def on_predict_button_clicked(self):
         team1 = self.home_team_combo.currentText()
         team2 = self.away_team_combo.currentText()
-        # Load preprocessed combined stats and the trained model
         self.rf_model, self.combined_stats = train_and_predict(team1, team2)
-        
-        # Now use the model and stats for prediction
-        prediction = self.predict_winner(team1, team2)
-        
-        # Display the prediction result
-        result_text = f"{team1} is predicted to win!" if prediction == 1 else f"{team2} is predicted to win!"
-        self.result_label.setText(result_text)
+        if self.rf_model is None or self.combined_stats.empty:
+        # Update the UI to inform the user that the model is not ready
+            self.result_label.setText("Model training is not yet implemented or data is missing.")
+        return  # Exit the function early
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
