@@ -30,5 +30,5 @@ team_names = {
     'seattle': ['Seattle Seahawks', 'Seahawks'],
     'tampa_bay': ['Tampa Bay Buccaneers', 'Buccaneers'],
     'tennessee': ['Tennessee Titans', 'Titans'],
-    'washington': ['Washington Commanders', 'Commanders', 'Washington Redskins', 'Redskins'],
+    'washington': ['Washington Commanders', 'Commanders'],
 }

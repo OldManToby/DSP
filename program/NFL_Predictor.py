@@ -54,11 +54,6 @@ class PredictionApp(QWidget):
             logo_path = os.path.join(team_logos_dir, folder_name, f'{folder_name.lower()}.png')
             self.team_logos[single_word_team_name] = logo_path
 
-        # Add an additional entry for the historical name 'Redskins'
-        # assuming 'washington' is the folder for Washington Commanders
-        self.team_logos['Redskins'] = os.path.join(team_logos_dir, 'washington', 'washington.png')
-
-
         # Populate available teams
         self.available_teams = list(self.team_logos.keys())
 

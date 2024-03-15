@@ -5638,7 +5638,7 @@ Week,Day,Date,Time,Winner/tie,Unnamed: 5,Loser/tie,Unnamed: 7,PtsW,PtsL,YdsW,TOW
 1,Sun,2022-09-11,1:00PM,Steelers,@,Bengals,boxscore,23,20,267,0,432,5
 1,Sun,2022-09-11,1:00PM,Texans,,Colts,boxscore,20,20,299,1,517,2
 1,Sun,2022-09-11,1:00PM,Eagles,@,Lions,boxscore,38,35,455,0,386,1
-1,Sun,2022-09-11,1:00PM,Washington Commanders,,Jaguars,boxscore,28,22,390,3,383,1
+1,Sun,2022-09-11,1:00PM,Commanders,,Jaguars,boxscore,28,22,390,3,383,1
 1,Sun,2022-09-11,1:00PM,Dolphins,,Patriots,boxscore,20,7,307,0,271,3
 1,Sun,2022-09-11,1:00PM,Ravens,@,Jets,boxscore,24,9,274,1,380,2
 1,Sun,2022-09-11,4:25PM,Chiefs,@,Cardinals,boxscore,44,21,488,1,282,0
@@ -5651,7 +5651,7 @@ Week,Day,Date,Time,Winner/tie,Unnamed: 5,Loser/tie,Unnamed: 7,PtsW,PtsL,YdsW,TOW
 2,Sun,2022-09-18,1:00PM,Giants,,Panthers,boxscore,19,16,265,0,275,2
 2,Sun,2022-09-18,1:00PM,Jets,@,Browns,boxscore,31,30,402,1,405,1
 2,Sun,2022-09-18,1:00PM,Jaguars,,Colts,boxscore,24,0,331,0,218,3
-2,Sun,2022-09-18,1:00PM,Lions,,Washington Commanders,boxscore,36,27,425,0,396,1
+2,Sun,2022-09-18,1:00PM,Lions,,Commanders,boxscore,36,27,425,0,396,1
 2,Sun,2022-09-18,1:00PM,Dolphins,@,Ravens,boxscore,42,38,547,2,473,0
 2,Sun,2022-09-18,1:00PM,Buccaneers,@,Saints,boxscore,20,10,260,1,308,5
 2,Sun,2022-09-18,1:00PM,Patriots,@,Steelers,boxscore,17,14,376,1,243,2
@@ -5672,7 +5672,7 @@ Week,Day,Date,Time,Winner/tie,Unnamed: 5,Loser/tie,Unnamed: 7,PtsW,PtsL,YdsW,TOW
 3,Sun,2022-09-25,1:00PM,Vikings,,Lions,boxscore,28,24,373,1,416,1
 3,Sun,2022-09-25,1:00PM,Ravens,@,Patriots,boxscore,37,26,394,2,447,4
 3,Sun,2022-09-25,1:00PM,Titans,,Raiders,boxscore,24,22,361,1,396,1
-3,Sun,2022-09-25,1:00PM,Eagles,@,Washington Commanders,boxscore,24,8,400,0,240,1
+3,Sun,2022-09-25,1:00PM,Eagles,@,Commanders,boxscore,24,8,400,0,240,1
 3,Sun,2022-09-25,4:05PM,Jaguars,@,Chargers,boxscore,38,10,413,0,312,2
 3,Sun,2022-09-25,4:25PM,Falcons,@,Seahawks,boxscore,27,23,386,2,420,1
 3,Sun,2022-09-25,4:25PM,Rams,@,Cardinals,boxscore,20,12,339,1,365,0
@@ -5685,7 +5685,7 @@ Week,Day,Date,Time,Winner/tie,Unnamed: 5,Loser/tie,Unnamed: 7,PtsW,PtsL,YdsW,TOW
 4,Sun,2022-10-02,1:00PM,Bills,@,Ravens,boxscore,23,20,326,2,296,2
 4,Sun,2022-10-02,1:00PM,Giants,,Bears,boxscore,20,12,333,2,304,3
 4,Sun,2022-10-02,1:00PM,Titans,@,Colts,boxscore,24,17,243,0,365,3
-4,Sun,2022-10-02,1:00PM,Cowboys,,Washington Commanders,boxscore,25,10,279,0,297,2
+4,Sun,2022-10-02,1:00PM,Cowboys,,Commanders,boxscore,25,10,279,0,297,2
 4,Sun,2022-10-02,1:00PM,Seahawks,@,Lions,boxscore,48,45,555,1,520,2
 4,Sun,2022-10-02,1:00PM,Chargers,@,Texans,boxscore,34,24,419,1,346,2
 4,Sun,2022-10-02,1:00PM,Eagles,,Jaguars,boxscore,29,21,401,1,219,5
@@ -5705,13 +5705,13 @@ Week,Day,Date,Time,Winner/tie,Unnamed: 5,Loser/tie,Unnamed: 7,PtsW,PtsL,YdsW,TOW
 5,Sun,2022-10-09,1:00PM,Texans,@,Jaguars,boxscore,13,6,248,0,422,2
 5,Sun,2022-10-09,1:00PM,Jets,,Dolphins,boxscore,40,17,322,0,295,2
 5,Sun,2022-10-09,1:00PM,Saints,,Seahawks,boxscore,39,32,438,2,396,1
-5,Sun,2022-10-09,1:00PM,Titans,@,Washington Commanders,boxscore,21,17,241,0,385,1
+5,Sun,2022-10-09,1:00PM,Titans,@,Commanders,boxscore,21,17,241,0,385,1
 5,Sun,2022-10-09,4:05PM,49ers,@,Panthers,boxscore,37,15,397,1,308,1
 5,Sun,2022-10-09,4:25PM,Eagles,@,Cardinals,boxscore,20,17,357,0,363,1
 5,Sun,2022-10-09,4:25PM,Cowboys,@,Rams,boxscore,22,10,239,0,323,3
 5,Sun,2022-10-09,8:20PM,Ravens,,Bengals,boxscore,19,17,325,1,291,1
 5,Mon,2022-10-10,8:15PM,Chiefs,,Raiders,boxscore,30,29,368,0,378,0
-6,Thu,2022-10-13,8:15PM,Washington Commanders,@,Bears,boxscore,12,7,214,0,391,2
+6,Thu,2022-10-13,8:15PM,Commanders,@,Bears,boxscore,12,7,214,0,391,2
 6,Sun,2022-10-16,1:00PM,Falcons,,49ers,boxscore,28,14,289,0,346,3
 6,Sun,2022-10-16,1:00PM,Bengals,@,Saints,boxscore,30,26,348,1,399,0
 6,Sun,2022-10-16,1:00PM,Patriots,@,Browns,boxscore,38,15,399,1,328,4
@@ -5731,7 +5731,7 @@ Week,Day,Date,Time,Winner/tie,Unnamed: 5,Loser/tie,Unnamed: 7,PtsW,PtsL,YdsW,TOW
 7,Sun,2022-10-23,1:00PM,Ravens,,Browns,boxscore,23,20,254,1,336,2
 7,Sun,2022-10-23,1:00PM,Titans,,Colts,boxscore,19,10,254,1,292,3
 7,Sun,2022-10-23,1:00PM,Cowboys,,Lions,boxscore,24,6,330,1,312,5
-7,Sun,2022-10-23,1:00PM,Washington Commanders,,Packers,boxscore,23,21,364,1,232,1
+7,Sun,2022-10-23,1:00PM,Commanders,,Packers,boxscore,23,21,364,1,232,1
 7,Sun,2022-10-23,1:00PM,Giants,@,Jaguars,boxscore,23,17,436,0,452,1
 7,Sun,2022-10-23,4:05PM,Raiders,,Texans,boxscore,38,20,400,0,404,1
 7,Sun,2022-10-23,4:05PM,Jets,@,Broncos,boxscore,16,9,260,0,324,1
@@ -5750,14 +5750,14 @@ Week,Day,Date,Time,Winner/tie,Unnamed: 5,Loser/tie,Unnamed: 7,PtsW,PtsL,YdsW,TOW
 8,Sun,2022-10-30,1:00PM,Patriots,@,Jets,boxscore,22,17,288,1,387,3
 8,Sun,2022-10-30,4:05PM,Titans,@,Texans,boxscore,17,10,354,2,161,1
 8,Sun,2022-10-30,4:25PM,49ers,@,Rams,boxscore,31,14,368,0,223,0
-8,Sun,2022-10-30,4:25PM,Washington Commanders,@,Colts,boxscore,17,16,362,1,324,2
+8,Sun,2022-10-30,4:25PM,Commanders,@,Colts,boxscore,17,16,362,1,324,2
 8,Sun,2022-10-30,4:25PM,Seahawks,,Giants,boxscore,27,13,277,1,225,2
 8,Sun,2022-10-30,8:20PM,Bills,,Packers,boxscore,27,17,369,2,398,1
 8,Mon,2022-10-31,8:15PM,Browns,,Bengals,boxscore,32,13,440,2,229,2
 9,Thu,2022-11-03,8:15PM,Eagles,@,Texans,boxscore,29,17,360,1,303,2
 9,Sun,2022-11-06,1:00PM,Jets,,Bills,boxscore,20,17,310,1,317,2
 9,Sun,2022-11-06,1:00PM,Lions,,Packers,boxscore,15,9,254,1,389,3
-9,Sun,2022-11-06,1:00PM,Vikings,@,Washington Commanders,boxscore,20,17,301,1,263,1
+9,Sun,2022-11-06,1:00PM,Vikings,@,Commanders,boxscore,20,17,301,1,263,1
 9,Sun,2022-11-06,1:00PM,Chargers,@,Falcons,boxscore,20,17,336,2,315,2
 9,Sun,2022-11-06,1:00PM,Bengals,,Panthers,boxscore,42,21,464,0,228,3
 9,Sun,2022-11-06,1:00PM,Dolphins,@,Bears,boxscore,35,32,379,0,368,0
@@ -5780,11 +5780,11 @@ Week,Day,Date,Time,Winner/tie,Unnamed: 5,Loser/tie,Unnamed: 7,PtsW,PtsL,YdsW,TOW
 10,Sun,2022-11-13,4:25PM,Packers,,Cowboys,boxscore,31,28,415,2,421,2
 10,Sun,2022-11-13,4:25PM,Cardinals,@,Rams,boxscore,27,17,298,0,256,2
 10,Sun,2022-11-13,8:20PM,49ers,,Chargers,boxscore,22,16,387,1,238,1
-10,Mon,2022-11-14,8:15PM,Washington Commanders,@,Eagles,boxscore,32,21,330,2,264,4
+10,Mon,2022-11-14,8:15PM,Commanders,@,Eagles,boxscore,32,21,330,2,264,4
 11,Thu,2022-11-17,8:15PM,Titans,@,Packers,boxscore,27,17,408,1,271,0
 11,Sun,2022-11-20,1:00PM,Bills,,Browns,boxscore,31,23,357,0,396,1
 11,Sun,2022-11-20,1:00PM,Lions,@,Giants,boxscore,31,18,325,0,413,3
-11,Sun,2022-11-20,1:00PM,Washington Commanders,@,Texans,boxscore,23,10,344,0,148,2
+11,Sun,2022-11-20,1:00PM,Commanders,@,Texans,boxscore,23,10,344,0,148,2
 11,Sun,2022-11-20,1:00PM,Patriots,,Jets,boxscore,10,3,297,0,103,0
 11,Sun,2022-11-20,1:00PM,Falcons,,Bears,boxscore,27,24,280,2,288,1
 11,Sun,2022-11-20,1:00PM,Ravens,,Panthers,boxscore,13,3,308,1,205,3
@@ -5802,7 +5802,7 @@ Week,Day,Date,Time,Winner/tie,Unnamed: 5,Loser/tie,Unnamed: 7,PtsW,PtsL,YdsW,TOW
 12,Sun,2022-11-27,1:00PM,Browns,,Buccaneers,boxscore,23,17,367,1,325,0
 12,Sun,2022-11-27,1:00PM,Dolphins,,Texans,boxscore,30,15,339,1,210,3
 12,Sun,2022-11-27,1:00PM,Jaguars,,Ravens,boxscore,28,27,332,1,415,2
-12,Sun,2022-11-27,1:00PM,Washington Commanders,,Falcons,boxscore,19,13,314,1,332,1
+12,Sun,2022-11-27,1:00PM,Commanders,,Falcons,boxscore,19,13,314,1,332,1
 12,Sun,2022-11-27,1:00PM,Panthers,,Broncos,boxscore,23,10,349,1,246,2
 12,Sun,2022-11-27,1:00PM,Jets,,Bears,boxscore,31,10,466,0,292,1
 12,Sun,2022-11-27,4:05PM,Raiders,@,Seahawks,boxscore,40,34,576,2,372,2
@@ -5816,7 +5816,7 @@ Week,Day,Date,Time,Winner/tie,Unnamed: 5,Loser/tie,Unnamed: 7,PtsW,PtsL,YdsW,TOW
 13,Sun,2022-12-04,1:00PM,Ravens,,Broncos,boxscore,10,9,285,2,272,0
 13,Sun,2022-12-04,1:00PM,Lions,,Jaguars,boxscore,40,14,437,0,266,1
 13,Sun,2022-12-04,1:00PM,Vikings,,Jets,boxscore,27,22,287,0,486,2
-13,Sun,2022-12-04,1:00PM,Washington Commanders,@,Giants,boxscore,20,20,411,1,316,1
+13,Sun,2022-12-04,1:00PM,Commanders,@,Giants,boxscore,20,20,411,1,316,1
 13,Sun,2022-12-04,1:00PM,Eagles,,Titans,boxscore,35,10,453,0,209,0
 13,Sun,2022-12-04,1:00PM,Steelers,@,Falcons,boxscore,19,16,351,0,306,1
 13,Sun,2022-12-04,1:00PM,Packers,@,Bears,boxscore,28,19,357,0,409,3
@@ -5853,7 +5853,7 @@ Week,Day,Date,Time,Winner/tie,Unnamed: 5,Loser/tie,Unnamed: 7,PtsW,PtsL,YdsW,TOW
 15,Sun,2022-12-18,4:05PM,Raiders,,Patriots,boxscore,30,24,308,1,318,1
 15,Sun,2022-12-18,4:25PM,Bengals,@,Buccaneers,boxscore,34,23,237,1,396,4
 15,Sun,2022-12-18,4:25PM,Chargers,,Titans,boxscore,17,14,365,2,284,1
-15,Sun,2022-12-18,8:15PM,Giants,@,Washington Commanders,boxscore,20,12,288,0,387,2
+15,Sun,2022-12-18,8:15PM,Giants,@,Commanders,boxscore,20,12,288,0,387,2
 15,Mon,2022-12-19,8:15PM,Packers,,Rams,boxscore,24,12,345,2,156,1
 16,Thu,2022-12-22,8:15PM,Jaguars,@,Jets,boxscore,19,3,365,1,227,2
 16,Sat,2022-12-24,1:00PM,Ravens,,Falcons,boxscore,17,9,299,0,327,1
@@ -5864,7 +5864,7 @@ Week,Day,Date,Time,Winner/tie,Unnamed: 5,Loser/tie,Unnamed: 7,PtsW,PtsL,YdsW,TOW
 16,Sat,2022-12-24,1:00PM,Texans,@,Titans,boxscore,19,14,285,1,272,3
 16,Sat,2022-12-24,1:00PM,Chiefs,,Seahawks,boxscore,24,10,297,0,333,1
 16,Sat,2022-12-24,1:00PM,Vikings,,Giants,boxscore,27,24,353,0,445,2
-16,Sat,2022-12-24,4:05PM,49ers,,Washington Commanders,boxscore,37,20,371,1,349,2
+16,Sat,2022-12-24,4:05PM,49ers,,Commanders,boxscore,37,20,371,1,349,2
 16,Sat,2022-12-24,4:25PM,Cowboys,,Eagles,boxscore,40,34,419,1,442,4
 16,Sat,2022-12-24,8:15PM,Steelers,,Raiders,boxscore,13,10,350,1,201,3
 16,Sun,2022-12-25,1:00PM,Packers,@,Dolphins,boxscore,26,20,301,1,376,4
@@ -5875,7 +5875,7 @@ Week,Day,Date,Time,Winner/tie,Unnamed: 5,Loser/tie,Unnamed: 7,PtsW,PtsL,YdsW,TOW
 17,Sun,2023-01-01,1:00PM,Falcons,,Cardinals,boxscore,20,19,298,1,339,0
 17,Sun,2023-01-01,1:00PM,Buccaneers,,Panthers,boxscore,30,24,478,1,400,3
 17,Sun,2023-01-01,1:00PM,Lions,,Bears,boxscore,41,10,504,0,230,2
-17,Sun,2023-01-01,1:00PM,Browns,@,Washington Commanders,boxscore,24,10,301,0,260,3
+17,Sun,2023-01-01,1:00PM,Browns,@,Commanders,boxscore,24,10,301,0,260,3
 17,Sun,2023-01-01,1:00PM,Giants,,Colts,boxscore,38,10,394,1,252,1
 17,Sun,2023-01-01,1:00PM,Chiefs,,Broncos,boxscore,27,24,374,2,307,2
 17,Sun,2023-01-01,1:00PM,Jaguars,@,Texans,boxscore,31,3,337,2,277,1
@@ -5897,7 +5897,7 @@ Week,Day,Date,Time,Winner/tie,Unnamed: 5,Loser/tie,Unnamed: 7,PtsW,PtsL,YdsW,TOW
 18,Sun,2023-01-08,1:00PM,Texans,@,Colts,boxscore,32,31,360,3,398,3
 18,Sun,2023-01-08,1:00PM,Dolphins,,Jets,boxscore,11,6,302,0,187,0
 18,Sun,2023-01-08,4:25PM,49ers,,Cardinals,boxscore,38,13,311,0,255,4
-18,Sun,2023-01-08,4:25PM,Washington Commanders,,Cowboys,boxscore,26,6,309,1,182,2
+18,Sun,2023-01-08,4:25PM,Commanders,,Cowboys,boxscore,26,6,309,1,182,2
 18,Sun,2023-01-08,4:25PM,Broncos,,Chargers,boxscore,31,28,471,2,352,2
 18,Sun,2023-01-08,4:25PM,Eagles,,Giants,boxscore,22,16,342,1,284,0
 18,Sun,2023-01-08,4:25PM,Seahawks,,Rams,boxscore,19,16,402,2,269,1
