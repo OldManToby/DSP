@@ -7,13 +7,39 @@ import joblib
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 from sklearn.impute import SimpleImputer
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.ensemble import RandomForestClassifier , GradientBoostingClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.neural_network import MLPClassifier
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import SVC
 from sklearn.metrics import classification_report , accuracy_score , confusion_matrix
 
 def train_and_predict(team1, team2):
     model = None
     combined_stats = pd.DataFrame()
+
+    def train_and_evaluate_model(model, X_train, y_train, X_test, y_test, model_name='Model'):
+        try:
+            # For logistic regression with GridSearchCV
+            if model_name == "Logistic Regression (GridSearchCV)":
+                model.fit(X_train, y_train)
+                best_model = model.best_estimator_
+                y_pred = best_model.predict(X_test)
+                print(f"Results for {model_name}:")
+                print("Best Parameters:", model.best_params_)
+            else:
+                model.fit(X_train, y_train)
+                y_pred = model.predict(X_test)
+                print(f"Results for {model_name}:")
+
+            print(classification_report(y_test, y_pred))
+            print("Accuracy:", accuracy_score(y_test, y_pred))
+            print("-----------\n")
+        except Exception as e:
+            print(f"An error occurred while training the {model_name}: {e}")
+
 
     # Begin Loading, Cleaning and Preproccessing of all datasets
     def load_defensive(file_path, na_values=None):
@@ -214,5 +240,28 @@ def train_and_predict(team1, team2):
 
     # Return the trained model and the principal components DataFrame
     combined_stats = pc_df
+
+    lr_model = LogisticRegression(random_state=42, max_iter=1000)
+    param_grid = {
+        'C': [0.001, 0.01, 0.1, 1, 10, 100],
+        'solver': ['liblinear', 'saga']
+    }
+    grid_search_lr = GridSearchCV(estimator=lr_model, param_grid=param_grid, cv=5, scoring='accuracy', verbose=1, n_jobs=-1)
+
+    # Initialize models outside of the function
+    models = {
+        "Logistic Regression (GridSearchCV)": grid_search_lr,
+        "Gradient Boosting": GradientBoostingClassifier(n_estimators=100, learning_rate=1.0, max_depth=1, random_state=42),
+        "KNN": KNeighborsClassifier(n_neighbors=5),
+        "Decision Tree": DecisionTreeClassifier(random_state=42),
+        "Neural Network": MLPClassifier(random_state=42, max_iter=1000),
+        "SVM": SVC(kernel='linear', random_state=42)
+    }
+
+# Call train_and_evaluate_model for each model
+    for model_name, model in models.items():
+        train_and_evaluate_model(model, X_train, y_train, X_test, y_test, model_name)
+
+
 
     return rf_model, combined_stats
