@@ -18,7 +18,7 @@ def clean_data(df, columns_to_drop, preserve_col=None):
     df.drop(columns=columns_to_drop, inplace=True, errors='ignore')
     # Fill missing numeric values with the mean
     for col in df.select_dtypes(include=np.number).columns:
-        df[col].fillna(df[col].mean(), inplace=True)
+        df[col] = df[col].fillna(df[col].mean())
     if preserved_data is not None:
         df[preserve_col] = preserved_data
     return df
@@ -112,7 +112,6 @@ for season, season_df in game_outcomes_data.groupby('Season'):
         records['TOW'].append(tow)
         records['TOL'].append(tol)
 
-# Convert the records dictionary to a DataFrame
 team_season_stats = pd.DataFrame(records)
 
 print(team_season_stats.head())
@@ -121,7 +120,7 @@ print(team_season_stats.head())
 defensive_data = clean_data(defensive_data, defensive_drop_columns, preserve_col='Team')
 offensive_data = clean_data(offensive_data, offensive_drop_columns,  preserve_col='Team')
 special_teams_data = clean_data(special_teams_data, special_teams_drop_columns,  preserve_col='Team')
-game_outcomes_data = clean_data(game_outcomes_data, game_outcome_drop_columns,  preserve_col='Team')
+team_season_stats = clean_data(team_season_stats, columns_to_drop=[],  preserve_col='Team')
 
 defensive_data = assign_seasons_based_on_team_appearances(defensive_data, appearances_per_season=6)
 offensive_data = assign_seasons_based_on_team_appearances(offensive_data, appearances_per_season=5)
@@ -137,7 +136,7 @@ print(team_season_stats[['Team', 'Season']].tail)
 plot_correlation_matrix(defensive_data, "Defensive Data Correlation Matrix")
 plot_correlation_matrix(offensive_data, "Offensive Data Correlation Matrix")
 plot_correlation_matrix(special_teams_data, "Special Teams Data Correlation Matrix")
-plot_correlation_matrix(game_outcomes_data, "Game Outcomes Data Correlation Matrix")
+plot_correlation_matrix(team_season_stats, "Game Outcomes Data Correlation Matrix")
 
 def keep_numeric_columns(df):
     return df.select_dtypes(include=[np.number])
@@ -163,13 +162,14 @@ exclude_columns = ['Team', 'Season']
 defensive_data_reduced, defensive_to_drop = remove_highly_correlated_features(defensive_data, exclude_cols=exclude_columns)
 offensive_data_reduced, offensive_to_drop = remove_highly_correlated_features(offensive_data, exclude_cols=exclude_columns)
 special_teams_data_reduced, special_teams_to_drop = remove_highly_correlated_features(special_teams_data, exclude_cols=exclude_columns)
-game_outcomes_data_reduced, game_outcomes_to_drop = remove_highly_correlated_features(game_outcomes_data, exclude_cols=exclude_columns)
+team_season_stats_data_reduced, team_season_stats_to_drop = remove_highly_correlated_features(team_season_stats, exclude_cols=exclude_columns)
+
 
 # Now you can plot the correlation matrices of the reduced dataframes
 plot_correlation_matrix(defensive_data_reduced, "Reduced Defensive Data Correlation Matrix")
 plot_correlation_matrix(offensive_data_reduced, "Reduced Offensive Data Correlation Matrix")
 plot_correlation_matrix(special_teams_data_reduced, "Reduced Special Teams Data Correlation Matrix")
-plot_correlation_matrix(game_outcomes_data_reduced, "Reduced Game Outcomes Data Correlation Matrix")
+plot_correlation_matrix(team_season_stats_data_reduced, "Reduced Game Outcomes Data Correlation Matrix")
 
 def apply_pca(df, exclude_cols=['Team', 'Season'], explained_variance_ratio=0.95):
     exclude_data = df[exclude_cols]
@@ -201,20 +201,50 @@ special_teams_data_pca, special_teams_pca_model = apply_pca(special_teams_data_r
 print("Special Teams Data PCA:")
 print(special_teams_data_pca.head())
 
-game_outcomes_data_pca, game_outcomes_pca_model = apply_pca(game_outcomes_data_reduced, 'Team')
+team_season_stats_data_pca, team_season_stats_pca_model = apply_pca(team_season_stats_data_reduced, 'Team')
 print("Game Outcomes Data PCA:")
-print(game_outcomes_data_pca.head())
+print(team_season_stats_data_pca.head())
 
 # Display the explained variance ratio for each PCA application
 print("Defensive Data PCA Explained Variance Ratio:", defensive_pca_model.explained_variance_ratio_)
 print("Offensive Data PCA Explained Variance Ratio:", offensive_pca_model.explained_variance_ratio_)
 print("Special Teams Data PCA Explained Variance Ratio:", special_teams_pca_model.explained_variance_ratio_)
-print("Game Outcomes Data PCA Explained Variance Ratio:", game_outcomes_pca_model.explained_variance_ratio_)
+print("Game Outcomes Data PCA Explained Variance Ratio:", team_season_stats_pca_model.explained_variance_ratio_)
 
-keys = ['Team', 'Season']
-merged_data = game_outcomes_data_pca.merge(defensive_data_pca, on=keys, how='left', suffixes=('', '_def'))
-merged_data = merged_data.merge(offensive_data_pca, on=keys, how='left', suffixes=('', '_off'))
-merged_data = merged_data.merge(special_teams_data_pca, on=keys, how='left', suffixes=('', '_st'))
+def apply_lda(df, target_col, exclude_cols=['Team', 'Season']):
+    # Split the dataframe into features and the target
+    X = df.drop(columns=exclude_cols + [target_col], errors='ignore')
+    y = df[target_col]
+    
+    # Standardize the features before applying LDA
+    scaler = StandardScaler()
+    X_scaled = scaler.fit_transform(X)
+    
+    # Create an LDA instance
+    lda = LDA(n_components=1)  # n_components should be 1 for binary classification
+    # Fit the LDA and transform the data
+    X_lda = lda.fit_transform(X_scaled, y)
+    
+    # Convert the LDA-transformed data back to a DataFrame
+    lda_columns = [f'LD{i+1}' for i in range(X_lda.shape[1])]
+    df_lda = pd.DataFrame(data=X_lda, columns=lda_columns)
+    
+    # Add back the excluded and target columns
+    df_lda = pd.concat([df[exclude_cols].reset_index(drop=True), df[[target_col]].reset_index(drop=True), df_lda], axis=1)
+    
+    return df_lda, lda
 
-print("Merged Data after PCA:")
-print(merged_data.head())
+target_column = 'Att'
+defensive_data_lda, defensive_lda_model = apply_lda(defensive_data_reduced, target_column, exclude_cols=['Team', 'Season'])
+print("Defensive Data LDA:")
+print(defensive_data_lda.head())
+offensive_data_lda, offensive_lda_model = apply_lda(offensive_data_reduced, target_column, exclude_cols=['Team', 'Season'])
+print("Offensive Data LDA:")
+print(offensive_data_lda.head())
+special_teams_data_lda, special_teams_lda_model = apply_lda(special_teams_data_reduced, target_column, exclude_cols=['Team', 'Season'])
+print("Special Teams Data LDA:")
+print(special_teams_data_lda.head())
+target_column = 'Wins'
+team_season_stats_data_lda, team_season_stats_data_lda_model = apply_lda(team_season_stats_data_reduced, target_column, exclude_cols=['Team', 'Season'])
+print("Game Outcome Data LDA:")
+print(team_season_stats_data_lda.head())
