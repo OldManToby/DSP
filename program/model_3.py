@@ -5,6 +5,10 @@ import matplotlib.pyplot as plt
 from sklearn.decomposition import PCA
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
 from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score
+
 
 # Function to load datasets
 def load_dataset(file_path):
@@ -248,3 +252,38 @@ target_column = 'Wins'
 team_season_stats_data_lda, team_season_stats_data_lda_model = apply_lda(team_season_stats_data_reduced, target_column, exclude_cols=['Team', 'Season'])
 print("Game Outcome Data LDA:")
 print(team_season_stats_data_lda.head())
+
+# Assuming 'Team' and 'Season' are in all datasets and are of the same format
+merged_data = defensive_data.merge(offensive_data, on=['Team', 'Season'], suffixes=('_def', '_off'))
+merged_data = merged_data.merge(special_teams_data, on=['Team', 'Season'], suffixes=('', '_st'))
+merged_data = merged_data.merge(team_season_stats[['Team', 'Season', 'Wins']], on=['Team', 'Season'])
+
+# Example: Define a winning season based on the median number of wins
+median_wins = merged_data['Wins'].median()
+merged_data['WinningSeason'] = (merged_data['Wins'] > median_wins).astype(int)
+
+# Exclude 'Team' and 'Season' for LDA, and use 'WinningSeason' as the target
+features = merged_data.drop(['Team', 'Season', 'Wins', 'WinningSeason'], axis=1)
+target = merged_data['WinningSeason']
+
+# Standardize the features
+scaler = StandardScaler()
+features_scaled = scaler.fit_transform(features)
+
+# Apply LDA
+lda = LDA(n_components=1)  # Using 1 as this is a binary classification
+features_lda = lda.fit_transform(features_scaled, target)
+
+# You can add the LDA component back to the dataframe if you want to visualize or further analyze
+merged_data['LDA_Component'] = features_lda
+
+X_train, X_test, y_train, y_test = train_test_split(features_lda, target, test_size=0.3, random_state=42)
+
+# Training a simple model
+model = RandomForestClassifier()
+model.fit(X_train, y_train)
+
+# Predicting and evaluating the model
+predictions = model.predict(X_test)
+print("Accuracy:", accuracy_score(y_test, predictions))
+
