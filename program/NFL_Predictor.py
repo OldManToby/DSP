@@ -163,6 +163,25 @@ class PredictionApp(QWidget):
 
 # Model For NFL Predictor
     def train_and_predict(self):
+        def train_and_evaluate_model(model, X_train, y_train, X_test, y_test, model_name='Model'):
+                try:
+                    # For logistic regression with GridSearchCV
+                    if model_name == "Logistic Regression (GridSearchCV)":
+                        model.fit(X_train, y_train)
+                        best_model = model.best_estimator_
+                        y_pred = best_model.predict(X_test)
+                        print(f"Results for {model_name}:")
+                        print("Best Parameters:", model.best_params_)
+                    else:
+                        model.fit(X_train, y_train)
+                        y_pred = model.predict(X_test)
+                        print(f"Results for {model_name}:")
+
+                    print(classification_report(y_test, y_pred))
+                    print("Accuracy:", accuracy_score(y_test, y_pred))
+                    print("-----------\n")
+                except Exception as e:
+                    print(f"An error occurred while training the {model_name}: {e}")
         def load_dataset(file_path):
             return pd.read_csv(file_path)
 
@@ -396,6 +415,30 @@ class PredictionApp(QWidget):
         X_train, X_test, y_train, y_test = train_test_split(features_lda, target, test_size=0.3, random_state=42)
         model = RandomForestClassifier()
         model.fit(X_train, y_train)
+
+        # Predicting and evaluating the model
+        predictions = model.predict(X_test)
+        print("Accuracy:", accuracy_score(y_test, predictions))
+
+        lr_model = LogisticRegression(random_state=42, max_iter=1000)
+        param_grid = {
+            'C': [0.001, 0.01, 0.1, 1, 10, 100],
+            'solver': ['liblinear', 'saga']
+        }
+        grid_search_lr = GridSearchCV(estimator=lr_model, param_grid=param_grid, cv=5, scoring='accuracy', verbose=1, n_jobs=-1)
+
+        # Initialize models outside of the function
+        models = {
+            "Logistic Regression (GridSearchCV)": grid_search_lr,
+            "Gradient Boosting": GradientBoostingClassifier(n_estimators=100, learning_rate=1.0, max_depth=1, random_state=42),
+            "KNN": KNeighborsClassifier(n_neighbors=5),
+            "Decision Tree": DecisionTreeClassifier(random_state=42),
+            "Neural Network": MLPClassifier(random_state=42, max_iter=1000),
+        }
+
+        # Call train_and_evaluate_model for each model
+        for model_name, model in models.items():
+            train_and_evaluate_model(model, X_train, y_train, X_test, y_test, model_name)
         return model , scaler , lda , merged_data
 
 
