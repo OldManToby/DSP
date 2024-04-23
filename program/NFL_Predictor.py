@@ -147,11 +147,47 @@ class PredictionApp(QWidget):
         features = teams_data.drop(exclude_columns, axis=1)
         features_scaled = self.scaler.transform(features)
         features_lda = self.lda.transform(features_scaled)
+
+        # Get the prediction and probabilities once
+        probabilities = self.model.predict_proba(features_lda)
         prediction = self.model.predict(features_lda)
+
+        # Calculate probabilities
+        team1_probability = probabilities[0][1] * 100
+        team2_probability = probabilities[0][0] * 100
+
+        def plot_best_features(teams_data, team1, team2):
+            # Determine the best feature based on the highest value for simplicity; adjust logic as needed
+            best_feature_team1 = teams_data.loc[teams_data['Team'] == team1].drop(columns=['Team', 'Season', 'Wins', 'WinningSeason', 'LDA_Component']).idxmax(axis=1).values[0]
+            best_value_team1 = teams_data.loc[teams_data['Team'] == team1, best_feature_team1].values[0]
+            
+            best_feature_team2 = teams_data.loc[teams_data['Team'] == team2].drop(columns=['Team', 'Season', 'Wins', 'WinningSeason', 'LDA_Component']).idxmax(axis=1).values[0]
+            best_value_team2 = teams_data.loc[teams_data['Team'] == team2, best_feature_team2].values[0]
+            
+            # Create a DataFrame for the plot
+            data = {
+                'Statistic': [best_feature_team1, best_feature_team2],
+                'Value': [best_value_team1, best_value_team2],
+                'Team': [team1, team2]
+            }
+            df = pd.DataFrame(data)
+            
+            # Create a bar plot
+            plt.figure(figsize=(10, 6))
+            barplot = sns.barplot(x='Statistic', y='Value', hue='Team', data=df)
+            plt.title('Best Feature Comparison Between Teams')
+            plt.ylabel('Value')
+            plt.xlabel('Best Feature')
+            plt.tight_layout()
+            plt.show()
+
+        # Example usage
+        plot_best_features(teams_data, team1, team2)
+
         if prediction[0] == 1:
-            return f"{team1} are predicted to win"
+            return f"{team1} are predicted to win with a possibility of {team1_probability:.2f}%"
         else:
-            return f"{team2} are predicted to win"
+            return f"{team2} are predicted to win with a possibility of {team2_probability:.2f}%"
 
     def on_predict_button_clicked(self):
         team1 = self.home_team_combo.currentText()
@@ -184,13 +220,13 @@ class PredictionApp(QWidget):
         def load_dataset(file_path):
             return pd.read_csv(file_path)
 
-        # Generalized data cleaning function
+        
         def clean_data(df, columns_to_drop, preserve_col=None):
             preserved_data = None
             if preserve_col and preserve_col in df.columns:
                 preserved_data = df[preserve_col].reset_index(drop=True)
             df.drop(columns=columns_to_drop, inplace=True, errors='ignore')
-            # Fill missing numeric values with the mean
+            
             for col in df.select_dtypes(include=np.number).columns:
                 df[col] = df[col].fillna(df[col].mean())
             if preserved_data is not None:
@@ -210,43 +246,69 @@ class PredictionApp(QWidget):
             df['Season'] = seasons
             return df
 
-        # Function to plot correlation matrix
         def plot_correlation_matrix(df, title):
-            # Exclude non-numeric columns
+            
             numeric_df = df.select_dtypes(include=[np.number])
             plt.figure(figsize=(12, 10))
-            corr = numeric_df.corr()  # Calculate correlation only on numeric columns
+            corr = numeric_df.corr()
             sns.heatmap(corr, annot=True, fmt=".2f", cmap='magma')
             plt.title(title)
             plt.show()
 
+        def extract_home_away_features(df):
+            # Initialize columns for home and away team stats
+            df['HomeTeam'] = None
+            df['AwayTeam'] = None
+            df['HomePts'] = 0
+            df['AwayPts'] = 0
+            df['HomeYds'] = 0
+            df['AwayYds'] = 0
+            df['HomeTO'] = 0
+            df['AwayTO'] = 0
+            
+            # Assign values based on whether the winner was at home or away
+            for idx, row in df.iterrows():
+                if row['Unnamed: 5'] == '@':  # Winner is the away team
+                    df.at[idx, 'AwayTeam'] = row['Winner/tie']
+                    df.at[idx, 'HomeTeam'] = row['Loser/tie']
+                    df.at[idx, 'AwayPts'] = row['PtsW']
+                    df.at[idx, 'HomePts'] = row['PtsL']
+                    df.at[idx, 'AwayYds'] = row['YdsW']
+                    df.at[idx, 'HomeYds'] = row['YdsL']
+                    df.at[idx, 'AwayTO'] = row['TOW']
+                    df.at[idx, 'HomeTO'] = row['TOL']
+                else:  # Winner is the home team
+                    df.at[idx, 'HomeTeam'] = row['Winner/tie']
+                    df.at[idx, 'AwayTeam'] = row['Loser/tie']
+                    df.at[idx, 'HomePts'] = row['PtsW']
+                    df.at[idx, 'AwayPts'] = row['PtsL']
+                    df.at[idx, 'HomeYds'] = row['YdsW']
+                    df.at[idx, 'AwayYds'] = row['YdsL']
+                    df.at[idx, 'HomeTO'] = row['TOW']
+                    df.at[idx, 'AwayTO'] = row['TOL']
 
-        # Paths to the datasets
-        base_directory = './clean_team_stats/'  # Adjust this if your datasets are not in the current directory
+            return df
+
+        base_directory = './clean_team_stats/'
         d_merged_data_path = base_directory + 'NFL_Defensive.csv'
         o_merged_data_path = base_directory + 'NFL_Offensive.csv'
         st_merged_data_path = base_directory + 'NFL_Special_Team.csv'
         go_merged_data_path = base_directory + 'NFL_Game_Outcome.csv'
 
-
-        # Load each dataset
         defensive_data = load_dataset(d_merged_data_path)
         offensive_data = load_dataset(o_merged_data_path)
         special_teams_data = load_dataset(st_merged_data_path)
         game_outcomes_data = load_dataset(go_merged_data_path)
+        game_outcomes_data = extract_home_away_features(game_outcomes_data)
 
-
-        # Specify columns to drop for each dataset
         defensive_drop_columns = ['Rush', 'YPC', 'RushPct', 'RushPct2', 'FR', 'SFTY', '3rd', '3rdPct', '4th', '4thPct', 'Scrm', 'FF', 'FRPct', 'INTPct', 'INTPct2']
         offensive_drop_columns = ['Rush','YPC','RushPct','RushPct2','RushPct3','Rec','Yds','Yds/Rec','RecPct1','RecPct2','RecPct3','Rsh','Tot','2-PT','3rd','3rdPct','4th','4thPct','Scrm']
         special_teams_drop_columns = ['1-19 >','20-29 >','30-39 >','40-49 >','50-59 >','60+ >','FGPct','XPM','XP','KRet','PRet','KO','Yds','TB','Ret','RetPct','OSK','OSKPct','OOB','TD','Cmp','CmpPct','Yds/Att','Pass','INT','Rate','1st','1stPct','20+','40+','Sck','SckY','Avg','FC','FUM']
         game_outcome_drop_columns = ['Unnamed: 7', 'Day', 'Time']
 
         game_outcomes_data['Date'] = pd.to_datetime(game_outcomes_data['Date'])
-        # Adjust the season based on the date, considering NFL season spans from September to January
         game_outcomes_data['Season'] = game_outcomes_data['Date'].dt.year
         game_outcomes_data.loc[game_outcomes_data['Date'].dt.month < 9, 'Season'] -= 1
-        # Initialize the records
         records = {
             'Team': [],
             'Season': [],
@@ -257,10 +319,10 @@ class PredictionApp(QWidget):
             'TOW': [],
             'TOL': []
         }
-        # Process each game
+
         for season, season_df in game_outcomes_data.groupby('Season'):
             for team in pd.concat([season_df['Winner/tie'], season_df['Loser/tie']]).unique():
-                # Wins
+
                 wins_df = season_df[season_df['Winner/tie'] == team]
                 losses_df = season_df[season_df['Loser/tie'] == team]
                 wins = len(wins_df)
@@ -283,7 +345,7 @@ class PredictionApp(QWidget):
 
         print(team_season_stats.head())
 
-        # Clean each dataset
+
         defensive_data = clean_data(defensive_data, defensive_drop_columns, preserve_col='Team')
         offensive_data = clean_data(offensive_data, offensive_drop_columns,  preserve_col='Team')
         special_teams_data = clean_data(special_teams_data, special_teams_drop_columns,  preserve_col='Team')
@@ -301,22 +363,18 @@ class PredictionApp(QWidget):
         def keep_numeric_columns(df):
             return df.select_dtypes(include=[np.number])
 
-        # Function to identify and remove highly correlated features
         def remove_highly_correlated_features(df, threshold=0.8, exclude_cols=[]):
-            # Exclude specified columns first
+
             analysis_df = df.drop(columns=exclude_cols, errors='ignore')
-            
-            # Ensure that only numeric columns are considered for correlation calculation
             analysis_df = analysis_df.select_dtypes(include=[np.number])
             
             corr_matrix = analysis_df.corr().abs()
             upper = corr_matrix.where(np.triu(np.ones(corr_matrix.shape), k=1).astype(np.bool_))
             to_drop = [column for column in upper.columns if any(upper[column] > threshold)]
             
-            # Drop highly correlated columns from the original dataframe
             df_reduced = df.drop(columns=to_drop, errors='ignore')
             return df_reduced, to_drop
-        exclude_columns = ['Team', 'Season']
+        exclude_columns = ['Team', 'Season', 'Wins']
 
         defensive_data_reduced, defensive_to_drop = remove_highly_correlated_features(defensive_data, exclude_cols=exclude_columns)
         offensive_data_reduced, offensive_to_drop = remove_highly_correlated_features(offensive_data, exclude_cols=exclude_columns)
@@ -365,15 +423,14 @@ class PredictionApp(QWidget):
         print("Game Outcomes Data PCA Explained Variance Ratio:", team_season_stats_pca_model.explained_variance_ratio_)
 
         def apply_lda(df, target_col, exclude_cols=['Team', 'Season']):
-            # Split the dataframe into features and the target
+
             X = df.drop(columns=exclude_cols + [target_col], errors='ignore')
             y = df[target_col]           
-            # Standardize the features before applying LDA
+
             scaler = StandardScaler()
             X_scaled = scaler.fit_transform(X)           
-            # Create an LDA instance
             lda = LDA(n_components=1)
-            # Fit the LDA and transform the data
+
             X_lda = lda.fit_transform(X_scaled, y)
             lda_columns = [f'LD{i+1}' for i in range(X_lda.shape[1])]
             df_lda = pd.DataFrame(data=X_lda, columns=lda_columns)
@@ -399,7 +456,6 @@ class PredictionApp(QWidget):
         merged_data = defensive_data.merge(offensive_data, on=['Team', 'Season'], suffixes=('_def', '_off'))
         merged_data = merged_data.merge(special_teams_data, on=['Team', 'Season'], suffixes=('', '_st'))
         merged_data = merged_data.merge(team_season_stats[['Team', 'Season', 'Wins']], on=['Team', 'Season'])
-
         median_wins = merged_data['Wins'].median()
         merged_data['WinningSeason'] = (merged_data['Wins'] > median_wins).astype(int)
         features = merged_data.drop(['Team', 'Season', 'Wins', 'WinningSeason'], axis=1)
@@ -426,7 +482,6 @@ class PredictionApp(QWidget):
         }
         grid_search_lr = GridSearchCV(estimator=lr_model, param_grid=param_grid, cv=5, scoring='accuracy', verbose=1, n_jobs=-1)
 
-        # Initialize models outside of the function
         models = {
             "Logistic Regression (GridSearchCV)": grid_search_lr,
             "Gradient Boosting": GradientBoostingClassifier(n_estimators=100, learning_rate=1.0, max_depth=1, random_state=42),
@@ -439,7 +494,6 @@ class PredictionApp(QWidget):
         for model_name, model in models.items():
             train_and_evaluate_model(model, X_train, y_train, X_test, y_test, model_name)
         return model , scaler , lda , merged_data
-
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
