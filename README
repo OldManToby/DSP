@@ -1,0 +1,49 @@
+Project Name:
+NFL Match Predictor
+
+Description:
+This project is a comprehensive tool designed to predict NFL match outcomes based on historical match statistics. The software integrates Python libraries with PyQt5 to provide a graphical user interface where users can select teams to predict the winner. It leverages various machine learning models including RandomForestClassifier and LogisticRegression to analyze team performance data since 2000, sourced from The Football Database.
+
+Installation Instructions:
+Ensure Python 3.8 or higher is installed on your system.
+Clone the repository or download the ZIP file and extract it.
+Navigate to the project directory and install required packages:
+Copy code
+pip install -r requirements.txt
+Usage:
+To start the application, run the following command from the root directory of the project:
+
+css
+Copy code
+python main.py
+Follow the on-screen instructions to select teams and view predictions.
+
+Dependencies:
+Python 3.8+
+NumPy
+pandas
+seaborn
+matplotlib
+scikit-learn
+PyQt5
+Pillow
+Setup:
+Ensure all dependencies are installed as mentioned in the installation section. No additional setup is required.
+
+How to Run Tests:
+Currently, there are no automated tests available for this project.
+
+Contribution Guidelines:
+Contributors are welcome to propose enhancements or fix bugs:
+
+Fork the repository.
+Create a new branch for your changes.
+Submit a pull request for review.
+Acknowledgments:
+Thanks to The Football Database for providing the data used in this project.
+
+License:
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+Disclaimer:
+This tool is for research purposes only and should not be used for gambling. The accuracy of predictions is not guaranteed.
