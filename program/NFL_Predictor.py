@@ -482,6 +482,7 @@ class PredictionApp(QWidget):
         grid_search_lr = GridSearchCV(estimator=lr_model, param_grid=param_grid, cv=5, scoring='accuracy', verbose=1, n_jobs=-1)
 
         models = {
+            "RandomForestClassifier": RandomForestClassifier(),
             "Logistic Regression (GridSearchCV)": grid_search_lr,
             "Gradient Boosting": GradientBoostingClassifier(n_estimators=100, learning_rate=1.0, max_depth=1, random_state=42),
             "KNN": KNeighborsClassifier(n_neighbors=5),
