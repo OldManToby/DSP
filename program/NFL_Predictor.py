@@ -147,23 +147,20 @@ class PredictionApp(QWidget):
         features_scaled = self.scaler.transform(features)
         features_lda = self.lda.transform(features_scaled)
 
-        # Get the prediction and probabilities once
         probabilities = self.model.predict_proba(features_lda)
         prediction = self.model.predict(features_lda)
 
-        # Calculate probabilities
         team1_probability = probabilities[0][1] * 100
         team2_probability = probabilities[0][0] * 100
 
         def plot_best_features(teams_data, team1, team2):
-            # Determine the best feature based on the highest value for simplicity; adjust logic as needed
+
             best_feature_team1 = teams_data.loc[teams_data['Team'] == team1].drop(columns=['Team', 'Season', 'Wins', 'WinningSeason', 'LDA_Component']).idxmax(axis=1).values[0]
             best_value_team1 = teams_data.loc[teams_data['Team'] == team1, best_feature_team1].values[0]
             
             best_feature_team2 = teams_data.loc[teams_data['Team'] == team2].drop(columns=['Team', 'Season', 'Wins', 'WinningSeason', 'LDA_Component']).idxmax(axis=1).values[0]
             best_value_team2 = teams_data.loc[teams_data['Team'] == team2, best_feature_team2].values[0]
             
-            # Create a DataFrame for the plot
             data = {
                 'Statistic': [best_feature_team1, best_feature_team2],
                 'Value': [best_value_team1, best_value_team2],
@@ -171,7 +168,7 @@ class PredictionApp(QWidget):
             }
             df = pd.DataFrame(data)
             
-            # Create a bar plot
+
             plt.figure(figsize=(10, 6))
             barplot = sns.barplot(x='Statistic', y='Value', hue='Team', data=df)
             plt.title('Best Feature Comparison Between Teams')
@@ -180,7 +177,6 @@ class PredictionApp(QWidget):
             plt.tight_layout()
             plt.show()
 
-        # Example usage
         plot_best_features(teams_data, team1, team2)
 
         if prediction[0] == 1:
