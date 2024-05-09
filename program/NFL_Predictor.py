@@ -199,7 +199,6 @@ class PredictionApp(QWidget):
     def train_and_predict(self):
         def train_and_evaluate_model(model, X_train, y_train, X_test, y_test, model_name='Model'):
                 try:
-                    # For logistic regression with GridSearchCV
                     if model_name == "Logistic Regression (GridSearchCV)":
                         model.fit(X_train, y_train)
                         best_model = model.best_estimator_
